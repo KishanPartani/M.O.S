@@ -1,0 +1,140 @@
+Reading Program
+Reading Data
+
+Hello World
+
+No Error
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+VIIT
+
+VIT
+
+NOT SAME
+
+No Error
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+EVEN ELEMENTS:
+
+0   2   4   6   8   
+
+No Error
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+NOT VOWEL
+
+No Error
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+1   0   0   1   
+
+PALINDROME
+
+No Error
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+*
+
+**
+
+***
+
+****
+
+***
+
+**
+
+*
+
+No Error
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+2   6   5   4     
+
+Not divisible by 5
+
+No Error
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+Operation Code Error
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+Operand Error
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+Line Limit Exceeded 
+ 
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+Time Limit Exceeded
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+Out of Data
+
+----------program executed sucessfully----------
+
+
+Reading Program
+Reading Data
+
+Invalid Page Fault
+
+----------program executed sucessfully----------
+
+

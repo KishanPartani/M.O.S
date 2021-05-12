@@ -5,7 +5,7 @@ IR = [0 for i in range(4)]
 IC = [0 for i in range(2)]
 R = [0 for i in range(4)]
 C = False
-SI = 0  #need to be looked
+SI = 0  # need to be looked
 PI = 0
 TI = 0
 PTR = [0 for i in range(4)]
@@ -14,20 +14,20 @@ used_frames = set()
 
 memory = [['\0' for i in range(4)] for j in range(300)]
 opfile = open('MOS_phase_2_output_file.txt', 'w')
-input_buffer = []
+input_buffer = []  # size is 40 bytes
 data_index = 0
 
-pd_error = 0
-gd_error = 0
+pd_error = 0   # for line limit exceeded
+gd_error = 0   # for out of data
 
 
 class PCB:
     def __init__(self, job_id, ttl, tll, ttc, llc):
         self.job_id = job_id
-        self.TTL = ttl
-        self.TTC = ttc
-        self.TLL = tll
-        self.LLC = llc
+        self.TTL = ttl   # total time limit
+        self.TTC = ttc   # total time counter
+        self.TLL = tll   # total line limit
+        self.LLC = llc   # line limit counter
 
     def incrementLLC(self):
         self.LLC = self.LLC + 1
@@ -51,7 +51,7 @@ def get_data(address):
         gd_error = -1
         return
     address = (address // 10) * 10
-    while (line[i] != '\n'):
+    while (line[i] != '\n'):          # adding data to the memory at received address
         memory[address][j] = line[i]
         i += 1
         j += 1
@@ -68,7 +68,7 @@ def put_data(address):
         return
     address = (address // 10) * 10
 
-    for i in range(address, address + 10):
+    for i in range(address, address + 10):   # printing entire block to file
         for j in range(4):
             if (memory[i][j] == '\0'):
                 break
@@ -129,10 +129,12 @@ def load():
                     lines_printed = line[12:16]
                     counter = 0
                     pcb = PCB(id, int(time), int(lines_printed), 0,
-                              0)  #initialize PCB
+                              0)  # initialize PCB
+                    # initialise frame for page table
                     frame_num = (random.randint(0, 29))
-                    used_frames.add(frame_num)
+                    used_frames.add(frame_num)   # add frame to used frames set
                     frame_num *= 10
+                    # initialise page table register
                     PTR[1] = frame_num // 100
                     frame_num = frame_num % 100
                     PTR[2] = frame_num // 10
@@ -148,6 +150,7 @@ def load():
                 elif (line[1:4] == 'END'):
                     counter = -1
                     print("new prog")
+                    # resetting all globals
                     C = False
                     memory = [['\0' for i in range(4)] for j in range(300)]
 
@@ -155,7 +158,7 @@ def load():
                     IC = [0 for i in range(2)]
                     R = [0 for i in range(4)]
                     C = False
-                    SI = 0  #need to be looked
+                    SI = 0  # need to be looked
                     PI = 0
                     TI = 0
                     PTR = [0 for i in range(4)]
@@ -169,13 +172,14 @@ def load():
 
             else:
                 if (counter == 0):  # for reading instructions
+                    # initialising frame for program
                     frame_num_prog = random.randint(0, 29)
-                    while frame_num_prog in used_frames:
+                    while frame_num_prog in used_frames:  # finding unique frame
                         frame_num_prog = random.randint(0, 29)
                     used_frames.add(frame_num_prog)
 
                     pt_num = int(PTR[1]) * 100 + int(PTR[2]) * 10 + int(
-                        PTR[3])  #updating page table entry
+                        PTR[3])  # updating page table entry
 
                     memory[pt_num][2] = frame_num_prog // 10
                     memory[pt_num][3] = frame_num_prog % 10
@@ -183,42 +187,41 @@ def load():
                     memory[pt_num][1] = 0
 
                     i = 0
-                    #print(int(time))
+                    # print(int(time))
 
-                    frame_num_p = frame_num_prog * 10
+                    frame_num_p = frame_num_prog * 10  # address where program is stored
 
                     while (i < len(line)):
 
                         if (line[i] == 'H'):
 
                             memory[frame_num_p][0] = line[i]
-                            i += 1
+                            i += 1  # since H has no operands associated with it
                             frame_num_p += 1
                         else:
                             memory[frame_num_p][0:4] = line[i:i + 4]
 
                             i += 4
                             frame_num_p += 1
-                        if (frame_num_p % 10 == 0):
+                        if (frame_num_p % 10 == 0):  # if frame size exceeded- assign new frame
                             frame_num_prog = random.randint(0, 29)
                             while frame_num_prog in used_frames:
                                 frame_num_prog = random.randint(0, 29)
                             used_frames.add(frame_num_prog)
                             frame_num_p = frame_num_prog * 10
-                            pt_num += 1
-
+                            pt_num += 1  # increment page table index
+                            # update page table entry
                             memory[pt_num][2] = frame_num_prog // 10
                             memory[pt_num][3] = frame_num_prog % 10
                             memory[pt_num][0] = 0
                             memory[pt_num][1] = 0
-
             index += 1
 
 
 def mos_startexecution():
     IC[0] = 0
     IC[1] = 0
-    print(PTR)
+    # print(PTR)
     execute_userprgm()
 
 
@@ -227,20 +230,20 @@ def master_mode(valid=False):
     if (TI == 0):
         if (SI == 0):
             if (PI == 1):
-                terminate(4)
+                terminate(4)  # Operation Code Error
             elif (PI == 2):
                 terminate(5)
-            elif (PI == 3):
-                if (valid):
+            elif (PI == 3):  # page fault
+                if (valid):  # valid argument passed to master mode function
                     valid_page_fault()
                 else:
-                    terminate(6)
+                    terminate(6)  # invalid page fault
         else:
-            if (SI == 1):
+            if (SI == 1):  # read function GD
                 get_data(address_map(int(IR[2]) * 10 + int(IR[3])))
-            elif (SI == 2):
+            elif (SI == 2):  # write function PD
                 put_data(address_map(int(IR[2]) * 10 + int(IR[3])))
-            elif (SI == 3):
+            elif (SI == 3):  # terminate successfully
                 terminate(0)
 
     elif (TI == 2):
@@ -251,7 +254,7 @@ def master_mode(valid=False):
                 terminate(4)
             elif (PI == 2):
                 terminate(3)
-                #terminate(5)
+                # terminate(5)
             elif (PI == 3):
                 terminate(3)
 
@@ -313,7 +316,7 @@ def execute_userprgm():
                 master_mode()
                 break
             IR = memory[inst_count]
-            IC[1] += 1  #incrementing IC
+            IC[1] += 1  # incrementing IC
             if IC[1] == 10:
                 IC[0] += 1
                 IC[1] = 0
@@ -405,7 +408,7 @@ def execute_userprgm():
             elif inst == "H\0":
                 SI = 3
                 master_mode()
-                #terminate()
+                # terminate()
                 break
 
             else:

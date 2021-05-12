@@ -232,7 +232,7 @@ def master_mode(valid=False):
             if (PI == 1):
                 terminate(4)  # Operation Code Error
             elif (PI == 2):
-                terminate(5)
+                terminate(5)  # Operand Error
             elif (PI == 3):  # page fault
                 if (valid):  # valid argument passed to master mode function
                     valid_page_fault()
@@ -250,13 +250,13 @@ def master_mode(valid=False):
 
         if (SI == 0):
             if (PI == 1):
-                terminate(3)
+                terminate(3)  # Time Limit Exceeded
                 terminate(4)
             elif (PI == 2):
-                terminate(3)
+                terminate(3)  # Time Limit Exceeded
                 # terminate(5)
             elif (PI == 3):
-                terminate(3)
+                terminate(3)  # Time Limit Exceeded
 
         else:
             if (SI == 1):
@@ -271,12 +271,15 @@ def master_mode(valid=False):
 def address_map(VA):
 
     global PTR, memory
+    # first we get page table entry
     pte = (int(PTR[1]) * 100 + int(PTR[2]) * 10 + int(PTR[3])) + VA // 10
-    if memory[pte][0] == '\0':
-        return -1
 
+    if memory[pte][0] == '\0':  # checking if anything is present in page table entry
+        return -1  # if not invoke page fault
+
+    # calculate memory frame entry from pte
     addr = int(memory[pte][2]) * 10 + int(memory[pte][3])
-    RA = addr * 10 + VA % 10
+    RA = addr * 10 + VA % 10  # calculate real address
     return RA
 
 

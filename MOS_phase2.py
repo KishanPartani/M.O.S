@@ -5,7 +5,7 @@ IR = [0 for i in range(4)]
 IC = [0 for i in range(2)]
 R = [0 for i in range(4)]
 C = False
-SI = 0  # need to be looked
+SI = 0
 PI = 0
 TI = 0
 PTR = [0 for i in range(4)]
@@ -315,9 +315,8 @@ def execute_userprgm():
             # converting virtual address to real addresss
             inst_count = address_map(10 * IC[0] + IC[1])
             print("IR", IR)
-            if (inst_count == -1):
+            if (inst_count == -1):  # master mode - operand error
                 PI = 2
-
                 master_mode()
                 break
             IR = memory[inst_count]

@@ -285,14 +285,15 @@ def address_map(VA):
 
 def valid_page_fault():
     global used_frames, memory, PTR
-    frame_num_data = random.randint(0, 29)
+    frame_num_data = random.randint(0, 29)  # initialise a new frame for data
     while frame_num_data in used_frames:
         frame_num_data = random.randint(0, 29)
     used_frames.add(frame_num_data)
+    # find page table index which is empty
     c_ptr = (int(PTR[1]) * 100 + int(PTR[2]) * 10 + int(PTR[3]))
     while (memory[c_ptr][0] != '\0'):
         c_ptr += 1
-
+    # add page table entry
     memory[c_ptr][2] = frame_num_data // 10
     memory[c_ptr][3] = frame_num_data % 10
     memory[c_ptr][0] = 0
@@ -305,12 +306,13 @@ def execute_userprgm():
     time_counter = 0
     while (1):
 
-        if (pcb.TTC <= pcb.TTL):
+        if (pcb.TTC <= pcb.TTL):   # checking for time limit exceeded error
 
             global IC, IR, R, C, T, SI, TI, PI, pd_error
             SI = 0
             PI = 0
             TI = 0
+            # converting virtual address to real addresss
             inst_count = address_map(10 * IC[0] + IC[1])
             print("IR", IR)
             if (inst_count == -1):
@@ -327,7 +329,7 @@ def execute_userprgm():
 
             if (inst[0] != "H"):
 
-                if ((IR[2].isnumeric() and IR[3].isnumeric()) == False):
+                if ((IR[2].isnumeric() and IR[3].isnumeric()) == False):  # checking for operand error
 
                     PI = 2
                     master_mode()
@@ -336,16 +338,16 @@ def execute_userprgm():
                 real_address = address_map(int(IR[2]) * 10 + int(IR[3]))
 
             if inst == "LR":
-                if (real_address == -1):
+                if (real_address == -1):  # invalid page fault
                     PI = 3
                     master_mode()
                     break
                 R = memory[real_address]
 
             elif inst == "SR":
-
-                if (real_address == -1):
+                if (real_address == -1):  # valid page fault
                     PI = 3
+                    # decrementing IC
                     if IC[1] != 0:
                         IC[1] -= 1
                     else:
@@ -360,7 +362,7 @@ def execute_userprgm():
 
             elif inst == "CR":
 
-                if (real_address == -1):
+                if (real_address == -1):  # invalid page fault
                     PI = 3
                     master_mode()
                     break
@@ -375,7 +377,7 @@ def execute_userprgm():
 
             elif inst == "GD":
 
-                if (real_address == -1):
+                if (real_address == -1):  # valid page fault
                     PI = 3
                     SI = 0
                     master_mode(valid=True)
@@ -391,19 +393,19 @@ def execute_userprgm():
                 SI = 1
 
                 master_mode()
-                if (gd_error == -1):
+                if (gd_error == -1):  # out of data
                     terminate(1)
                     break
                 #get_data(int(IR[2]) * 10 + int(IR[3]))
             elif inst == "PD":
-                if (real_address == -1):
+                if (real_address == -1):  # invalid page fault
                     PI = 3
                     master_mode()
                     break
                 else:
                     SI = 2
                     master_mode()
-                    if (pd_error == -1):
+                    if (pd_error == -1):  # if line limit exceeds
                         terminate(2)
                         break
 
@@ -420,7 +422,7 @@ def execute_userprgm():
                 break
             pcb.incrementTTC()
 
-        else:
+        else:         # time limit exceeded error
             SI = 1
             TI = 2
             master_mode()

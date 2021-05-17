@@ -314,12 +314,12 @@ def execute_userprgm():
             TI = 0
             # converting virtual address to real addresss
             inst_count = address_map(10 * IC[0] + IC[1])
-            print("IR", IR)
             if (inst_count == -1):  # master mode - operand error
                 PI = 2
                 master_mode()
                 break
             IR = memory[inst_count]
+            print("IR", IR)
             IC[1] += 1  # incrementing IC
             if IC[1] == 10:
                 IC[0] += 1
@@ -375,10 +375,11 @@ def execute_userprgm():
                     IC[1] = int(IR[3])
 
             elif inst == "GD":
-
+                print(inst_count, real_address)
                 if (real_address == -1):  # valid page fault
                     PI = 3
                     SI = 0
+                    print('valid page fault')
                     master_mode(valid=True)
                     if IC[1] != 0:
                         IC[1] -= 1

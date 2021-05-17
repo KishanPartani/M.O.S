@@ -13,7 +13,7 @@ PTR = [0 for i in range(4)]
 used_frames = set()
 
 memory = [['\0' for i in range(4)] for j in range(300)]
-opfile = open('MOS_phase_2_output_file.txt', 'w')
+opfile = open('output.txt', 'w')
 input_buffer = []  # size is 40 bytes
 data_index = 0
 
@@ -110,7 +110,7 @@ def terminate(em):
 
 
 def load():
-    with open("MOS_phase_2_input_file.txt", "r") as file:
+    with open("input.txt", "r") as file:
         global input_buffer, memory
 
         input_buffer = file.readlines()

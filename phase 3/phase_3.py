@@ -75,6 +75,29 @@ def start():
         master_mode()
 
 
+def interrupt_routine(rnum, task=''):
+    if(rnum == 1):
+        # code for interrupt routine 1
+        pass
+    elif(rnum == 2):
+        # code for interrupt routine 2
+        pass
+    elif(rnum == 3):
+        # code for interrupt routine 3
+        if task == 'IS':
+            pass
+        elif task == 'OS':
+            pass
+        elif task == 'LD':
+            pass
+        elif task == 'RD':
+            pass
+        elif task == 'WT':
+            pass
+
+        pass
+
+
 def master_mode():
     global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH
     pcb = rq[0]
@@ -90,7 +113,6 @@ def master_mode():
                 IC = [0 for i in range(2)]
                 R = [0 for i in range(4)]
                 C = False
-                return
 
             elif (PI == 2):
                 # Operand Error
@@ -102,11 +124,13 @@ def master_mode():
                 IC = [0 for i in range(2)]
                 R = [0 for i in range(4)]
                 C = False
-                return
 
             elif (PI == 3):  # page fault
                 if (valid):  # valid argument passed to master mode function
                     valid_page_fault()
+                    rq.append(rq[0])
+                    rq.pop()
+
                 else:
                     # invalid page fault
                     rq[0].terminate_code = 6
@@ -117,7 +141,6 @@ def master_mode():
                     IC = [0 for i in range(2)]
                     R = [0 for i in range(4)]
                     C = False
-                    return
 
         else:
             if (SI == 1):  # read function GD
@@ -125,13 +148,12 @@ def master_mode():
                 rq[0].read = True
                 ioq.append(rq[0])
                 rq.pop()
-                return
+
             elif (SI == 2):  # write function PD
                 # move PCB from RQ TO IOQ WRITE
                 rq[0].write = True
                 ioq.append(rq[0])
                 rq.pop()
-                return
 
             elif (SI == 3):  # terminate successfully
                 # MOVE PCB FROM RQ TO TQ
@@ -143,7 +165,6 @@ def master_mode():
                 IC = [0 for i in range(2)]
                 R = [0 for i in range(4)]
                 C = False
-                return
 
     elif (TI == 2):
         rq[0].terminate_code = 3
@@ -154,10 +175,26 @@ def master_mode():
         IC = [0 for i in range(2)]
         R = [0 for i in range(4)]
         C = False
-        return
 
-    rq.append(rq[0])
-    rq.pop()
+    if IOI == 1:
+        interrupt_routine(1)
+    elif IOI == 2:
+        interrupt_routine(2)
+    elif IOI == 3:
+        interrupt_routine(2)
+        interrupt_routine(1)
+    elif IOI == 4:
+        interrupt_routine(3)
+    elif IOI == 5:
+        interrupt_routine(1)
+        interrupt_routine(3)
+    elif IOI == 6:
+        interrupt_routine(3)
+        interrupt_routine(2)
+    elif IOI == 7:
+        interrupt_routine(2)
+        interrupt_routine(1)
+        interrupt_routine(3)
 
 
 def start_channel(i):

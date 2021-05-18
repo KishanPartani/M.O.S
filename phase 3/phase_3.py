@@ -135,7 +135,7 @@ def master_mode():
 
             elif (SI == 3):  # terminate successfully
                 # MOVE PCB FROM RQ TO TQ
-                rq[0].terminat_code = 0
+                rq[0].terminate_code = 0
                 tq.append(rq[0])
                 rq.pop
                 memory = [['\0' for i in range(4)] for j in range(300)]

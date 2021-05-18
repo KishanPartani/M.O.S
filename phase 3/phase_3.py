@@ -80,19 +80,21 @@ def start():
         simulate()
         master_mode()
         time+=1
-
+        print("IFBQ Queue",ifbq)
+        
 
 def interrupt_routine(rnum, task=''):
     print("interrrupt routine", rnum)
     global buffer_index,input_buffer,counter_for_job,line_index,eb
     if(rnum == 1):
-        print("supervisory storage",supervisory_storage)
+        #print("supervisory storage",supervisory_storage)
         global buffer_index
         pcb = PCB(0,0,0,0,0,0)
         index=0
         eb=[['\0' for i in range(4)] for i in range (10)]
         for i in range(len(buffer_status)):
             if(buffer_status[i]==0):
+                print("i of supervisory",i)
                 #eb=supervisory_storage[i]
                 buffer_status[i]=1
                 break
@@ -103,6 +105,7 @@ def interrupt_routine(rnum, task=''):
             return
         line = input_buffer[buffer_index]
         while(True):
+            print("PCB Contents",pcb.data_frames," ",pcb.program_frames)
             if(index==10):
                 #print(eb)
                 supervisory_storage[i]=eb
@@ -116,18 +119,20 @@ def interrupt_routine(rnum, task=''):
                 for i in range(len(buffer_status)):
                     if(buffer_status[i]==0):
                         #eb=supervisory_storage[i]
+                        print("i of supervisory this",i)
                         buffer_status[i]=1
                         eb=[['\0' for i in range(4)] for i in range (10)]
                         break
                 
             if(line_index>=len(line)):
-                if(counter_for_job==0):
+                if(line[0]!='$'):
                     #print(eb)
                     supervisory_storage[i]=eb
                     ifbq.append(eb)
                     pcb.program_frames+=1
                     for i in range(len(buffer_status)):
                         if(buffer_status[i]==0):
+                            print("i of supervisory",i)
                             #eb=supervisory_storage[i]
                             eb=[['\0' for i in range(4)] for i in range (10)]
                             buffer_status[i]=1
@@ -160,6 +165,7 @@ def interrupt_routine(rnum, task=''):
                     
                 elif(line[1:4]=='END'):
                     supervisory_storage[i]=eb
+                    print("END CARD")
                     lq.append(pcb)
                     line_index+=4
                 index-=1
@@ -327,8 +333,7 @@ def simulate():
         if(pcb.TSC == TS):
             TI = 1
     ##NEEDS TO BE REMOVED
-    for i in range(3):
-        
+    for i in range(3):       
         if(CH[i]):
             CHT[i] += 1
             if(i == 0 and CHT[i] < CHT_TOT[i]):

@@ -95,7 +95,18 @@ def start():
         print('hi')
         print(CHT)
         time += 1
-    print_drum(80)
+    print_drum()
+
+
+def free_drum_track(start=0):
+    global drum
+    for i in range(start, 500):
+        if(drum[i][0] == '\0'):
+            return i
+    for i in range(0, start):
+        if(drum[i][0] == '\0'):
+            return
+    return -1
 
 
 def interrupt_routine(rnum):
@@ -219,24 +230,50 @@ def interrupt_routine(rnum):
 
         # code for interrupt routine 3
         if task == 'IS':
+            if(free_drum_track() == -1):
+                print('NO SPACE IN DRUM')
+                return
+            if(len(ifbq) == 0):
+                return
             if(len(lq) != 0):
                 cur_pcb = lq.pop(0)
-
-                print("data", cur_pcb.data_frames,
-                      "prog", cur_pcb.program_frames)
-                print("length of ifbq", len(ifbq))
+                cur_pcb.P = []
+                cur_pcb.D = []
+                cur_pcb.O = []
+                print(len(ifbq))
                 for i in range(cur_pcb.program_frames):
+                    drum_index = free_drum_track(drum_index)
+                    if(drum_index == -1):
+                        print('NO SPACE IN DRUM')
+                        return
                     drum[drum_index:drum_index+10] = ifbq.pop(0)
+                    cur_pcb.P.append(drum_index)
                     drum_index += 10
 
                 for i in range(cur_pcb.data_frames):
+                    drum_index = free_drum_track(drum_index)
+                    if(drum_index == -1):
+                        print('NO SPACE IN DRUM')
+                        return
                     drum[drum_index:drum_index+10] = ifbq.pop(0)
+                    cur_pcb.D.append(drum_index)
                     drum_index += 10
 
                 for index in cur_pcb.supervisory_indices:
                     supervisory_storage[index] = [
                         ["\0" for i in range(4)] for j in range(10)]
 
+                for i in range(cur_pcb.TLL):
+                    # check this if print malfunctions
+                    drum_index = free_drum_track(drum_index)
+                    if(drum_index == -1):
+                        print('NO SPACE IN DRUM')
+                        return
+                    drum[drum_index:drum_index+10] = ['' for i in range(10)]
+                    cur_pcb.O.append(drum_index)
+                    drum_index += 10
+
+                lq.append(cur_pcb)
             # pcb=lq[0]
             #print("checking data index",pcb.supervisory_indices)
 

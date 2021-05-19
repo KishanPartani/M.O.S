@@ -19,6 +19,7 @@ class PCB:
         self.data_frames = 0
         self.terminate_code = -1
         self.supervisory_indices = []
+
     def incrementLLC(self):
         self.LLC = self.LLC + 1
 
@@ -29,8 +30,15 @@ class PCB:
         self.TSC = self.TSC + 1
 
 
+def print_drum(max_index=500):
+    global drum
+    print("Drum")
+    for i in range(max_index):
+        print(drum[i])
+
+
 def set_variables():
-    global m, drum_index,ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, CHT_TOT, valid, buffer_status, counter_for_job, line_index, buffer_index, task
+    global m, drum_index, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, CHT_TOT, valid, buffer_status, counter_for_job, line_index, buffer_index, task
     m = 0
     line_index = 0
     counter_for_job = -1
@@ -65,7 +73,8 @@ def set_variables():
     buffer_status = [0 for i in range(10)]
     buffer_index = 0
     task = ''
-    drum_index=0
+    drum_index = 0
+
 
 def start():
     global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
@@ -86,12 +95,12 @@ def start():
         print('hi')
         print(CHT)
         time += 1
-    print(drum)
-    print("drum idex",drum_index)
+    print_drum(80)
+
 
 def interrupt_routine(rnum):
     print("interrrupt routine", rnum)
-    global buffer_index, input_buffer, counter_for_job, line_index, eb ,IOI, task,lq,drum_index
+    global buffer_index, input_buffer, counter_for_job, line_index, eb, IOI, task, lq, drum_index
     if(rnum == 1):
         #print("supervisory storage",supervisory_storage)
         global buffer_index
@@ -173,7 +182,7 @@ def interrupt_routine(rnum):
                 elif(line[1:4] == 'DTA'):
                     counter_for_job = 1
                     line_index += 4
-                    pcb.data_index=pcb.program_index+pcb.program_frames+1
+                    pcb.data_index = pcb.program_index+pcb.program_frames+1
                 elif(line[1:4] == 'END'):
                     supervisory_storage[i] = eb
                     print("END CARD")
@@ -207,17 +216,30 @@ def interrupt_routine(rnum):
         pass
     elif(rnum == 3):
         print("IR CALLED")
-        
+
         # code for interrupt routine 3
         if task == 'IS':
-            if(len(lq)!=0):
-                cur_pcb=lq.pop(0)
-                
-                print("data",cur_pcb.data_frames,"prog",cur_pcb.program_frames)
-                print("length of ifbq",len(ifbq))
-            #pcb=lq[0]
+            if(len(lq) != 0):
+                cur_pcb = lq.pop(0)
+
+                print("data", cur_pcb.data_frames,
+                      "prog", cur_pcb.program_frames)
+                print("length of ifbq", len(ifbq))
+                for i in range(cur_pcb.program_frames):
+                    drum[drum_index:drum_index+10] = ifbq.pop(0)
+                    drum_index += 10
+
+                for i in range(cur_pcb.data_frames):
+                    drum[drum_index:drum_index+10] = ifbq.pop(0)
+                    drum_index += 10
+
+                for index in cur_pcb.supervisory_indices:
+                    supervisory_storage[index] = [
+                        ["\0" for i in range(4)] for j in range(10)]
+
+            # pcb=lq[0]
             #print("checking data index",pcb.supervisory_indices)
-            
+
         elif task == 'OS':
             pass
         elif task == 'LD':

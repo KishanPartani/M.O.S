@@ -30,10 +30,10 @@ class PCB:
 
 
 def set_variables():
-    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, CHT_TOT, valid,buffer_status,counter_for_job,line_index,buffer_index
+    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, CHT_TOT, valid, buffer_status, counter_for_job, line_index, buffer_index, task
     m = 0
-    line_index=0
-    counter_for_job=-1
+    line_index = 0
+    counter_for_job = -1
     valid = False
     IR = [0 for i in range(4)]
     IC = [0 for i in range(2)]
@@ -62,87 +62,96 @@ def set_variables():
     drum = [['\0' for i in range(4)] for j in range(500)]
     opfile = open('output.txt', 'w')
     data_index = 0
-    buffer_status=[0 for i in range(10)]
-    buffer_index=0
+    buffer_status = [0 for i in range(10)]
+    buffer_index = 0
+    task = ''
+
 
 def start():
-    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH,buffer_status
+    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
     set_variables()
     IOI = 1
     start_channel(1)
-    print("IOI",IOI)
+    print("IOI in start", IOI)
     simulate()
     master_mode()
-    time=0
-    while ((len(rq) > 0 or len(ifbq) > 0 or len(ofbq) > 0) and time<5):
-        print("time",time)
+    print(len(rq))
+    time = 0
+    # while ((len(rq) > 0 or len(ifbq) > 0 or len(ofbq) > 0) or time < 5):
+    for i in range(0, 10):
+        global CHT
         execute_usrprgm()
         simulate()
         master_mode()
-        time+=1
-        print("IFBQ Queue",ifbq)
-        
+        print('hi')
+        print(CHT)
+        time += 1
+        print("IFBQ Queue", ifbq)
 
-def interrupt_routine(rnum, task=''):
+
+def interrupt_routine(rnum):
     print("interrrupt routine", rnum)
-    global buffer_index,input_buffer,counter_for_job,line_index,eb
+    global buffer_index, input_buffer, counter_for_job, line_index, eb
     if(rnum == 1):
         #print("supervisory storage",supervisory_storage)
         global buffer_index
-        pcb = PCB(0,0,0,0,0,0)
-        index=0
-        eb=[['\0' for i in range(4)] for i in range (10)]
+        pcb = PCB(0, 0, 0, 0, 0, 0)
+        index = 0
+        eb = [['\0' for i in range(4)] for i in range(10)]
         for i in range(len(buffer_status)):
-            if(buffer_status[i]==0):
-                print("i of supervisory",i)
-                #eb=supervisory_storage[i]
-                buffer_status[i]=1
+            if(buffer_status[i] == 0):
+                print("i of supervisory", i)
+                # eb=supervisory_storage[i]
+                buffer_status[i] = 1
                 break
         # code for interrupt routine 1
         print(buffer_index)
-        print("input buffer",input_buffer)
-        if(buffer_index==len(input_buffer)):
+        print("input buffer", input_buffer)
+        if(buffer_index == len(input_buffer)):
             return
         line = input_buffer[buffer_index]
         while(True):
-            print("PCB Contents",pcb.data_frames," ",pcb.program_frames)
-            if(index==10):
-                #print(eb)
-                supervisory_storage[i]=eb
+            print("PCB Contents", pcb.data_frames, " ", pcb.program_frames)
+            if(index == 10):
+                # print(eb)
+                supervisory_storage[i] = eb
                 ifbq.append(eb)
-                index=0
-                if(counter_for_job==0):
-                    pcb.program_frames+=1
-                elif(counter_for_job==1):
-                    pcb.data_frames+=1
+                index = 0
+                if(counter_for_job == 0):
+                    pcb.program_frames += 1
+                elif(counter_for_job == 1):
+                    pcb.data_frames += 1
 
                 for i in range(len(buffer_status)):
-                    if(buffer_status[i]==0):
-                        #eb=supervisory_storage[i]
-                        print("i of supervisory this",i)
-                        buffer_status[i]=1
-                        eb=[['\0' for i in range(4)] for i in range (10)]
+                    if(buffer_status[i] == 0):
+                        # eb=supervisory_storage[i]
+                        print("i of supervisory this", i)
+                        buffer_status[i] = 1
+                        eb = [['\0' for i in range(4)] for i in range(10)]
                         break
-                
-            if(line_index>=len(line)):
-                if(line[0]!='$'):
-                    #print(eb)
-                    supervisory_storage[i]=eb
+
+            if(line_index >= len(line)):
+                if(line[0] != '$'):
+                    # print(eb)
+                    supervisory_storage[i] = eb
                     ifbq.append(eb)
-                    pcb.program_frames+=1
+                    if(counter_for_job == 0):
+                        pcb.program_frames += 1
+                    elif(counter_for_job == 1):
+                        pcb.data_frames += 1
                     for i in range(len(buffer_status)):
-                        if(buffer_status[i]==0):
-                            print("i of supervisory",i)
-                            #eb=supervisory_storage[i]
-                            eb=[['\0' for i in range(4)] for i in range (10)]
-                            buffer_status[i]=1
+                        if(buffer_status[i] == 0):
+                            print("i of supervisory", i)
+                            # eb=supervisory_storage[i]
+                            eb = [['\0' for i in range(4)] for i in range(10)]
+                            buffer_status[i] = 1
                             break
 
                 line_index = 0
-                buffer_index+=1
-                index=0
-                if(buffer_index==len(input_buffer)):
-                    IOI=-1
+                buffer_index += 1
+                index = 0
+                if(buffer_index == len(input_buffer)):
+                    IOI = -1
                     break
                 line = input_buffer[buffer_index]
 
@@ -151,45 +160,51 @@ def interrupt_routine(rnum, task=''):
                     id = line[4:8]
                     time = line[8:12]
                     lines_printed = line[12:16]
-                    pcb.job_id=id  # initialize PCB    ##needs to be changed
-                    pcb.TTL=int(time)
-                    pcb.TLL=int(lines_printed)
+                    pcb.job_id = id  # initialize PCB    ##needs to be changed
+                    pcb.TTL = int(time)
+                    pcb.TLL = int(lines_printed)
                     frame_num = (random.randint(0, 29))
-                    used_frames.add(frame_num) 
-                    counter_for_job=0
-                    line_index+=12
+                    used_frames.add(frame_num)
+                    counter_for_job = 0
+                    line_index += 12
 
-                elif(line[1:4]=='DTA'):
-                    counter_for_job=1
-                    line_index+=4
-                    
-                elif(line[1:4]=='END'):
-                    supervisory_storage[i]=eb
+                elif(line[1:4] == 'DTA'):
+                    counter_for_job = 1
+                    line_index += 4
+
+                elif(line[1:4] == 'END'):
+                    supervisory_storage[i] = eb
                     print("END CARD")
                     lq.append(pcb)
-                    line_index+=4
-                index-=1
+                    print("JOB ID : ", pcb.job_id)
+                    line_index += 4
+                    buffer_index += 1
+                    start_channel(3)  # start input spooling
+                    task = 'IS'
+                    return
+                index -= 1
             else:
-                if(counter_for_job==0):             #for program card
-                    if(line[line_index]=='H'):
-                        eb[index][0]=line[line_index]
-                        line_index+=1
-                    elif(line[line_index]=='\n'):
-                        line_index+=1 
+                if(counter_for_job == 0):  # for program card
+                    if(line[line_index] == 'H'):
+                        eb[index][0] = line[line_index]
+                        line_index += 1
+                    elif(line[line_index] == '\n'):
+                        line_index += 1
                     else:
-                        eb[index][0:4]=line[line_index:line_index+4]
-                        line_index+=4
-                
-                elif(counter_for_job==1):           #for data card
-                    eb[index][0:4]=line[line_index:line_index+4]
-                    line_index+=4
-            index=index+1
+                        eb[index][0:4] = line[line_index:line_index+4]
+                        line_index += 4
+
+                elif(counter_for_job == 1):  # for data card
+                    eb[index][0:4] = line[line_index:line_index+4]
+                    line_index += 4
+            index = index+1
 
     elif(rnum == 2):
         # code for interrupt routine 2
 
         pass
     elif(rnum == 3):
+        print("IR CALLED")
         # code for interrupt routine 3
         if task == 'IS':
             pass
@@ -202,12 +217,11 @@ def interrupt_routine(rnum, task=''):
         elif task == 'WT':
             pass
         pass
-    
 
 
 def master_mode():
-    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH,buffer_status
-    if(len(rq)!=0):
+    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
+    if(len(rq) != 0):
         pcb = rq[0]
         print("master mode")
         if (TI == 0 or TI == 1):
@@ -285,7 +299,7 @@ def master_mode():
             R = [0 for i in range(4)]
             C = False
 
-    print("IOI",IOI)
+    print("IOI", IOI)
     if IOI == 1:
         print("interrupt routine 1")
         interrupt_routine(1)
@@ -309,11 +323,11 @@ def master_mode():
 
 
 def start_channel(i):
-    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH,buffer_status
+    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
     if(i == 1):
         IOI -= 1
         CH[0] = True
-        CHT[0] = 0      #Channel Timer
+        CHT[0] = 0  # Channel Timer
     elif(i == 2):
         IOI -= 2
         CH[1] = True
@@ -326,22 +340,33 @@ def start_channel(i):
 
 
 def simulate():
-    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH,buffer_status
-    if(len(rq)!=0):
+    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
+    if(len(rq) != 0):
         pcb = rq[0]
         pcb.incrementTSC()
         if(pcb.TSC == TS):
             TI = 1
-    ##NEEDS TO BE REMOVED
-    for i in range(3):       
+    # NEEDS TO BE REMOVED
+    print(CH)
+    print(CHT)
+    print(CHT_TOT)
+    for i in range(3):
         if(CH[i]):
             CHT[i] += 1
-            if(i == 0 and CHT[i] < CHT_TOT[i]):
-                IOI += 1    
-            elif(i == 1 and CHT[i] < CHT_TOT[i]):
+            print(i, CHT[i])
+            if(i == 0 and CHT[i] == CHT_TOT[i]):
+                IOI += 1
+                CH[i] = False
+                CHT[i] = 0
+            elif(i == 1 and CHT[i] == CHT_TOT[i]):
                 IOI += 2
-            elif(i == 2 and CHT[i] < CHT_TOT[i]):
+                CH[i] = False
+                CHT[i] = 0
+            elif(i == 2 and CHT[i] == CHT_TOT[i]):
                 IOI += 4
+                CH[i] = False
+                CHT[i] = 0
+
 
 def address_map(VA):
     global PTR, memory
@@ -376,7 +401,7 @@ def valid_page_fault():
 
 
 def execute_usrprgm():
-    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, valid,buffer_status
+    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, valid, buffer_status
     if len(rq) == 0:
         return
     print("execute user program")

@@ -18,7 +18,7 @@ class PCB:
         self.program_frames = 0
         self.data_frames = 0
         self.terminate_code = -1
-
+        self.supervisory_indices = []
     def incrementLLC(self):
         self.LLC = self.LLC + 1
 
@@ -30,7 +30,7 @@ class PCB:
 
 
 def set_variables():
-    global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, CHT_TOT, valid, buffer_status, counter_for_job, line_index, buffer_index, task
+    global m, drum_index,ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, CHT_TOT, valid, buffer_status, counter_for_job, line_index, buffer_index, task
     m = 0
     line_index = 0
     counter_for_job = -1
@@ -65,12 +65,12 @@ def set_variables():
     buffer_status = [0 for i in range(10)]
     buffer_index = 0
     task = ''
-
+    drum_index=0
 
 def start():
     global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
     set_variables()
-    IOI = 1
+    IOI = 0
     start_channel(1)
     print("IOI in start", IOI)
     simulate()
@@ -78,7 +78,7 @@ def start():
     print(len(rq))
     time = 0
     # while ((len(rq) > 0 or len(ifbq) > 0 or len(ofbq) > 0) or time < 5):
-    for i in range(0, 10):
+    for i in range(0, 14):
         global CHT
         execute_usrprgm()
         simulate()
@@ -86,12 +86,12 @@ def start():
         print('hi')
         print(CHT)
         time += 1
-        print("IFBQ Queue", ifbq)
-
+    print(drum)
+    print("drum idex",drum_index)
 
 def interrupt_routine(rnum):
     print("interrrupt routine", rnum)
-    global buffer_index, input_buffer, counter_for_job, line_index, eb
+    global buffer_index, input_buffer, counter_for_job, line_index, eb ,IOI, task,lq,drum_index
     if(rnum == 1):
         #print("supervisory storage",supervisory_storage)
         global buffer_index
@@ -105,7 +105,7 @@ def interrupt_routine(rnum):
                 buffer_status[i] = 1
                 break
         # code for interrupt routine 1
-        print(buffer_index)
+        pcb.supervisory_indices.append(i)
         print("input buffer", input_buffer)
         if(buffer_index == len(input_buffer)):
             return
@@ -129,6 +129,7 @@ def interrupt_routine(rnum):
                         buffer_status[i] = 1
                         eb = [['\0' for i in range(4)] for i in range(10)]
                         break
+                pcb.supervisory_indices.append(i)
 
             if(line_index >= len(line)):
                 if(line[0] != '$'):
@@ -146,6 +147,7 @@ def interrupt_routine(rnum):
                             eb = [['\0' for i in range(4)] for i in range(10)]
                             buffer_status[i] = 1
                             break
+                    pcb.supervisory_indices.append(i)
 
                 line_index = 0
                 buffer_index += 1
@@ -171,7 +173,7 @@ def interrupt_routine(rnum):
                 elif(line[1:4] == 'DTA'):
                     counter_for_job = 1
                     line_index += 4
-
+                    pcb.data_index=pcb.program_index+pcb.program_frames+1
                 elif(line[1:4] == 'END'):
                     supervisory_storage[i] = eb
                     print("END CARD")
@@ -181,6 +183,7 @@ def interrupt_routine(rnum):
                     buffer_index += 1
                     start_channel(3)  # start input spooling
                     task = 'IS'
+                    print("\n\nProgram done \n\n")
                     return
                 index -= 1
             else:
@@ -201,13 +204,20 @@ def interrupt_routine(rnum):
 
     elif(rnum == 2):
         # code for interrupt routine 2
-
         pass
     elif(rnum == 3):
         print("IR CALLED")
+        
         # code for interrupt routine 3
         if task == 'IS':
-            pass
+            if(len(lq)!=0):
+                cur_pcb=lq.pop(0)
+                
+                print("data",cur_pcb.data_frames,"prog",cur_pcb.program_frames)
+                print("length of ifbq",len(ifbq))
+            #pcb=lq[0]
+            #print("checking data index",pcb.supervisory_indices)
+            
         elif task == 'OS':
             pass
         elif task == 'LD':
@@ -299,7 +309,7 @@ def master_mode():
             R = [0 for i in range(4)]
             C = False
 
-    print("IOI", IOI)
+    print("IOI in master mode", IOI)
     if IOI == 1:
         print("interrupt routine 1")
         interrupt_routine(1)
@@ -325,16 +335,16 @@ def master_mode():
 def start_channel(i):
     global m, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, PTR, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
     if(i == 1):
-        IOI -= 1
+        #IOI -= 1
         CH[0] = True
         CHT[0] = 0  # Channel Timer
     elif(i == 2):
-        IOI -= 2
+        #IOI -= 2
         CH[1] = True
         CHT[1] = 0
 
     elif(i == 3):
-        IOI -= 4
+        #IOI -= 4
         CH[2] = True
         CHT[2] = 0
 

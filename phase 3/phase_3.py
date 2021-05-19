@@ -262,6 +262,7 @@ def interrupt_routine(rnum):
                 for index in cur_pcb.supervisory_indices:
                     supervisory_storage[index] = [
                         ["\0" for i in range(4)] for j in range(10)]
+                    buffer_status[index] = 0
 
                 for i in range(cur_pcb.TLL):
                     # check this if print malfunctions
@@ -272,7 +273,6 @@ def interrupt_routine(rnum):
                     drum[drum_index:drum_index+10] = ['' for i in range(10)]
                     cur_pcb.O.append(drum_index)
                     drum_index += 10
-
                 lq.append(cur_pcb)
             # pcb=lq[0]
             #print("checking data index",pcb.supervisory_indices)
@@ -280,6 +280,41 @@ def interrupt_routine(rnum):
         elif task == 'OS':
             pass
         elif task == 'LD':
+            cur_pcb = lq.pop(0)
+            # initialise page table for the process
+            frame_num = (random.randint(0, 29))
+            used_frames.add(frame_num)   # add frame to used frames set
+            frame_num *= 10
+            # initialise page table register
+            PTR[1] = frame_num // 100
+            frame_num = frame_num % 100
+            PTR[2] = frame_num // 10
+            PTR[3] = frame_num % 10
+            cur_pcb.PTR = PTR   # Save PTR into PCB
+
+            # initialising memory frame and adding it to Page Table
+            frame_num_prog = random.randint(0, 29)
+            while frame_num_prog in used_frames:  # finding unique frame
+                frame_num_prog = random.randint(0, 29)
+            used_frames.add(frame_num_prog)
+
+            pt_num = int(PTR[1]) * 100 + int(PTR[2]) * 10 + int(
+                PTR[3])  # updating page table entry
+
+            memory[pt_num][2] = frame_num_prog // 10
+            memory[pt_num][3] = frame_num_prog % 10
+            memory[pt_num][0] = 0
+            memory[pt_num][1] = 0
+
+            i = 0
+
+            frame_num_p = frame_num_prog * 10  # address where program is stored
+
+            for index in cur_pcb.P:
+                memory[frame_num_p:frame_num_p+10] = drum[index:index+10]
+                frame_num_p += 10
+
+            rq.append(cur_pcb)
             pass
         elif task == 'RD':
             pass
@@ -422,7 +457,7 @@ def simulate():
     for i in range(3):
         if(CH[i]):
             CHT[i] += 1
-            print(i, CHT[i])
+            print("CHANNEL ", i, CHT[i])
             if(i == 0 and CHT[i] == CHT_TOT[i]):
                 IOI += 1
                 CH[i] = False

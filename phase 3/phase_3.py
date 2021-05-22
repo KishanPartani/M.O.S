@@ -262,11 +262,11 @@ def interrupt_routine(rnum):
             if(free_drum_track() == -1):
                 print('NO SPACE IN DRUM')
                 return
-            if(len(ifbq) == 0):
-                return
             if(len(lq) != 0):
-                
                 cur_pcb = lq.pop(0)
+                if(len(ifbq) == 0 and cur_pcb.op_index_check == cur_pcb.TLL ):
+                    return
+
                 print("lq in is",len(lq))
                 if(cur_pcb.program_index_check < cur_pcb.program_frames):
                     #for i in range(cur_pcb.program_frames):

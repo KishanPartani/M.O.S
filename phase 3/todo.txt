@@ -1,5 +1,4 @@
 priority to the task
 channel timer
 CR BT (Execute user prog)
-empty drum
 codes with error

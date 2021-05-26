@@ -11,7 +11,7 @@ class PCB:
         self.LLC = llc   # line limit counter
         self.TSC = tsc  # time slice counter
         self.curr_IC = [0 for i in range(2)]
-        self.PTR = [0 for i in range(4)]
+        self.PTR = [-1 for i in range(4)]
         self.read = False
         self.write = False
         self.program_index = 0
@@ -29,6 +29,7 @@ class PCB:
         self.empty_drum_indices=[]
         self.real_address = 0
         self.error=0
+        self.used_mem_loc=[]
 
     def incrementLLC(self):
         self.LLC = self.LLC + 1
@@ -99,7 +100,7 @@ def start():
     print("IOI in start", IOI)
     simulate()
     master_mode()
-    while ((len(rq) > 0 or len(ifbq) > 0 or len(tq)>0 or len(ofbq) > 0 or len(ioq)>0 or len(lq)>0 or time<10)):
+    while ((len(rq) > 0 or len(ifbq) > 0 or len(tq)>0 or len(ofbq) > 0 or len(ioq)>0 or len(lq)>0 or time<6) and (time<70)):
         print("Length of rq",len(rq))
         print("Length of ifbq",len(ifbq))
         print("Length of ofbq",len(ofbq))
@@ -112,22 +113,20 @@ def start():
         master_mode()
         time+=1
         print("time",time)
-    print("IR",IR)
-    print("Length of rq",len(rq))
-    print("Length of ifbq",len(ifbq))
-    print("Length of ofbq",len(ofbq))
-    print("Length of ioq",len(ioq))
-    print("Length of lq",len(lq))
-    print("Length of tq",len(tq))
+    # print("IR",IR)
+    # print("Length of rq",len(rq))
+    # print("Length of ifbq",len(ifbq))
+    # print("Length of ofbq",len(ofbq))
+    # print("Length of ioq",len(ioq))
+    # print("Length of lq",len(lq))
+    # print("Length of tq",len(tq))
     #print_drum()
     #display(memory,300)
     #display(drum,500)
 
 def free_drum_track(start=0):
     global drum
-    print("start",start)
     for i in range(start, 500,10):
-        print(i,len(drum[i]))
         if(drum[i][0] == '\0'):
             return i
     for i in range(0, start,10):
@@ -141,7 +140,7 @@ def display(x,y):
 
 def interrupt_routine(rnum):
     print("interrrupt routine", rnum)
-    global buffer_index,inp_flag,mem_available,op_flag, input_buffer, counter_for_job, line_index, eb, IOI, task, lq, drum_index, lq_am,mem_flag, memory,drum
+    global buffer_index,inp_flag,mem_available,op_flag,ifbq,ofbq,tq, input_buffer, counter_for_job, line_index, eb, IOI, task, lq,rq, drum_index,mem_flag, memory,drum
     if(rnum == 1):
         #print("supervisory storage",supervisory_storage)
         global buffer_index
@@ -160,8 +159,37 @@ def interrupt_routine(rnum):
         if(buffer_index == len(input_buffer)):
             return
         line = input_buffer[buffer_index]
+        print("lala",line)
         while(True):
             # print("PCB Contents", pcb.data_frames, " ", pcb.program_frames)
+            if(line_index >= len(line)):
+                if(line[0] != '$'):
+                    # print(eb)
+                    supervisory_storage[i] = eb
+                    ifbq.append(eb)
+                    if(counter_for_job == 0):
+                        pcb.program_frames += 1
+                    elif(counter_for_job == 1):
+                        pcb.data_frames += 1
+                    for i in range(len(buffer_status)):
+                        if(buffer_status[i] == 0):
+                            #print("i of supervisory", i)
+                            # eb=supervisory_storage[i]
+                            eb = [['\0' for i in range(4)] for j in range(10)]
+                            buffer_status[i] = 1
+                            break
+                    if(i==len(buffer_status)):
+                        break
+                    pcb.supervisory_indices.append(i)
+
+                line_index = 0
+                buffer_index += 1
+                index = 0
+                if(buffer_index == len(input_buffer)):
+                    #IOI = -1           ##needs to be checked
+                    break
+                line = input_buffer[buffer_index]
+
             if(index == 10):
                 # print(eb)
                 supervisory_storage[i] = eb
@@ -181,32 +209,6 @@ def interrupt_routine(rnum):
                         break
                 pcb.supervisory_indices.append(i)
 
-            if(line_index >= len(line)):
-                if(line[0] != '$'):
-                    # print(eb)
-                    supervisory_storage[i] = eb
-                    ifbq.append(eb)
-                    if(counter_for_job == 0):
-                        pcb.program_frames += 1
-                    elif(counter_for_job == 1):
-                        pcb.data_frames += 1
-                    for i in range(len(buffer_status)):
-                        if(buffer_status[i] == 0):
-                            #print("i of supervisory", i)
-                            # eb=supervisory_storage[i]
-                            eb = [['\0' for i in range(4)] for j in range(10)]
-                            buffer_status[i] = 1
-                            break
-                    pcb.supervisory_indices.append(i)
-
-                line_index = 0
-                buffer_index += 1
-                index = 0
-                if(buffer_index == len(input_buffer)):
-                    #IOI = -1           ##needs to be checked
-                    break
-                line = input_buffer[buffer_index]
-
             if (line[0].startswith('$')):
                 if (line[1:4] == 'AMJ'):
                     id = line[4:8]
@@ -215,8 +217,9 @@ def interrupt_routine(rnum):
                     pcb.job_id = id  # initialize PCB    ##needs to be changed
                     pcb.TTL = int(time)
                     pcb.TLL = int(lines_printed)
-                    frame_num = (random.randint(0, 29))
-                    used_frames.add(frame_num)
+                    print("TLL in amj",pcb.TLL)
+                    # frame_num = (random.randint(0, 29))
+                    # used_frames.add(frame_num)
                     counter_for_job = 0
                     line_index += 12
 
@@ -233,14 +236,14 @@ def interrupt_routine(rnum):
                     buffer_index += 1
                     if(inp_flag):
                         inp_flag=False
-                        task = 'IS'
+                        # task = 'IS'
                         IOI+=4
                         start_channel(3)  # start input spooling
                     
                     start_channel(1)
-                    print("channel in IR1",CH)
-                    # print("\n\nProgram done \n\n")
-                    print("Program card",)
+                    # print("channel in IR1",CH)
+                    # # print("\n\nProgram done \n\n")
+                    # print("Program card",)
                     return
                 index -= 1
             else:
@@ -256,7 +259,7 @@ def interrupt_routine(rnum):
 
                 elif(counter_for_job == 1):  # for data card
                     for i in range(4):
-                        if(((line_index+i)<len(line)) and line[line_index+i]!='\n'):
+                        if((line_index+i)<len(line)):
                             eb[index][i]=line[line_index+i]
                     line_index+=4
 
@@ -264,10 +267,10 @@ def interrupt_routine(rnum):
 
         if(buffer_index<len(input_buffer)):
             start_channel(1)
-        print("channel in IR1",CH)
+        
 
     elif(rnum == 2):
-        print("channel 2 started",CH)
+        
         if(len(ofbq)!=0):
             a=ofbq.pop(0)
             print("content in a ",a)
@@ -275,92 +278,168 @@ def interrupt_routine(rnum):
                 for j in range(len(a[i])):
                     if(a[i][j]!='\0'):
                         print(a[i][j],end="",file=opfile)
+            print('',file=opfile)
             
         start_channel(2)
     elif(rnum == 3):
-        print("Started channel 3, task=",task)
         if task == 'IS':
-            
+            print("in is after task",len(lq))
             if(free_drum_track() == -1):
                 print('NO SPACE IN DRUM')
                 return
+
             if(len(lq) != 0):
                 cur_pcb = lq.pop(0)
-                if(len(ifbq) == 0 and cur_pcb.op_index_check == cur_pcb.TLL ):
-                    return
+                
+                if(len(ifbq) == 0 and cur_pcb.op_index_check == cur_pcb.TLL and cur_pcb.TLL!=0):
+                    task='LD'
+                    lq.insert(0,cur_pcb)
 
-                print("lq in is",len(lq))
+                print(cur_pcb.program_index_check," ",  cur_pcb.program_frames," ",cur_pcb.data_index_check," ",cur_pcb.data_frames," ",cur_pcb.op_index_check," ",cur_pcb.TLL)
                 if(cur_pcb.program_index_check < cur_pcb.program_frames):
                     #for i in range(cur_pcb.program_frames):
-
+                    print("hiii")
                     drum_index = free_drum_track(drum_index)
+                    print("drum index",drum_index)
                     if(drum_index == -1):
                         print('NO SPACE IN DRUM')
+                        lq.insert(0, cur_pcb)
                         return
-                    drum[drum_index:drum_index+10] = ifbq.pop(0)
+                    ap=ifbq.pop(0)
+                    print("xyz",ap)
+                    drum[drum_index:drum_index+10] = ap
                     cur_pcb.P.append(drum_index)
                     cur_pcb.empty_drum_indices.append(drum_index)
-                    print("NEW NEW ",cur_pcb.P)
-                    print("PCB id",cur_pcb.job_id)
+                    
                     drum_index += 10
                     cur_pcb.program_index_check += 1
                     lq.insert(0, cur_pcb)
-                    print("lq prog",cur_pcb.program_index_check," ", cur_pcb.program_frames)
-                    return
+                    sindex = cur_pcb.supervisory_indices.pop(0)
+                    supervisory_storage[sindex] = [
+                                ["\0" for i in range(4)] for j in range(10)]
+                    buffer_status[sindex] = 0
+                    print("lq in is",len(lq))
+                
+                # if((cur_pcb.program_index_check == cur_pcb.program_frames) and (cur_pcb.data_index_check == cur_pcb.data_frames) and cur_pcb.data_index_check == cur_pcb.data_frames):
+                #     lq.insert(0,cur_pcb)
 
-                if((cur_pcb.program_index_check == cur_pcb.program_frames) and (cur_pcb.data_index_check < cur_pcb.data_frames)):
+                elif((cur_pcb.program_index_check == cur_pcb.program_frames) and (cur_pcb.data_index_check < cur_pcb.data_frames)):
                     #for i in range(cur_pcb.data_frames):
+                    print("hello")
                     drum_index = free_drum_track(drum_index)
+                    print("drum index",drum_index)
                     if(drum_index == -1):
                         print('NO SPACE IN DRUM')
+                        lq.insert(0, cur_pcb)
                         return
-                    drum[drum_index:drum_index+10] = ifbq.pop(0)
+                    ap=ifbq.pop(0)
+                    print("xyz",ap)
+                    drum[drum_index:drum_index+10] = ap
+                    # drum[drum_index:drum_index+10] = ifbq.pop(0)
                     cur_pcb.D.append(drum_index)
                     cur_pcb.empty_drum_indices.append(drum_index)
                     drum_index += 10
                     cur_pcb.data_index_check += 1
-                    print("lq data",cur_pcb.data_index_check," ", cur_pcb.data_frames)
-                    print("lq op",cur_pcb.op_index_check, " ", cur_pcb.TLL)
+                    # print("lq data",cur_pcb.data_index_check," ", cur_pcb.data_frames)
+                    # print("lq op",cur_pcb.op_index_check, " ", cur_pcb.TLL)
                     lq.insert(0, cur_pcb)
-                    return
+                    print("lq in is",len(lq))
+                    sindex = cur_pcb.supervisory_indices.pop(0)
+                    supervisory_storage[sindex] = [
+                                ["\0" for i in range(4)] for j in range(10)]
+                    buffer_status[sindex] = 0
+                    ##needs to be changed
+                    if(cur_pcb.data_index_check == cur_pcb.data_frames):
+                        for k in range(cur_pcb.TLL):
+                            drum_index = free_drum_track(drum_index)
+                            print("drum index",drum_index)
+                            if(drum_index == -1):
+                                print('NO SPACE IN DRUM')
+                                return
+                            drum[drum_index:drum_index+10] = [['' for i in range(4)] for j in range (10)]
+                            cur_pcb.O.append(drum_index)
+                            cur_pcb.empty_drum_indices.append(drum_index)
+                            drum_index += 10
+                            cur_pcb.op_index_check += 1
+                        # pcb=lq.pop(0)
+                        # lq.append(pcb)
+                        lq.append(cur_pcb)
+                    
+
+        elif task == 'OS':
+            if(len(tq)!=0):
+                
+                # display(drum,120)
+                pcb=tq.pop(0)
+                if(pcb.terminate_code == 0):
+                    print("in os LLC = ",pcb.LLC)
+                    if(pcb.LLC==0):
+                        eb = [['\0' for i in range(4)] for j in range(10)]
+                        for i in range(len(buffer_status)):
+                            if(buffer_status[i] == 0):
+                                #print("i of supervisory", i)
+                                # eb=supervisory_storage[i]
+                                buffer_status[i] = 1
+                                break
+                        eb[0][0]='\n'
+                        ofbq.append(eb)
+                        for x in pcb.empty_drum_indices:
+                            for i in range(x,x+10):
+                                drum[i]=['\0' for j in range(4)]
+                        # display(drum,100)
+                        if(op_flag==1):
+                            op_flag+=1
+                            IOI+=2
+                            start_channel(2)
+                        return
+
+                    eb = [['\0' for i in range(4)] for j in range(10)]
+                    for i in range(len(buffer_status)):
+                        if(buffer_status[i] == 0):
+                            #print("i of supervisory", i)
+                            # eb=supervisory_storage[i]
+                            buffer_status[i] = 1
+                            break
+                    index=pcb.O.pop(0)
+                    eb=drum[index:index+10]
+                    ofbq.append(eb)
+
+                    drum[index:index+10]=[['\0' for i in range (4)] for j in range (10)]
+
+                    pcb.LLC-=1                          ##need to be looked later
+                    if(pcb.LLC==0):
+                        eb = [['\0' for i in range(4)] for j in range(10)]
+                        for i in range(len(buffer_status)):
+                            if(buffer_status[i] == 0):
+                                #print("i of supervisory", i)
+                                # eb=supervisory_storage[i]
+                                buffer_status[i] = 1
+                                break
+                        eb[0][0]='\n'
+                        ofbq.append(eb)
+                        for x in pcb.empty_drum_indices:
+                            drum[x:x+10]=[['\0' for i in range (4)] for j in range (10)]
+                        # display(drum,100)
+                        ##need to add code to empty drum
+                    else:
+                        tq.insert(0,pcb)
+                    print("op flag",op_flag)
 
                 else:
-                    #for i in range(cur_pcb.TLL):
-                        # check this if print malfunctions
-                    print("shift op frames")
-                    print("drum index",drum_index)
-                    drum_index = free_drum_track(drum_index)
-                    if(drum_index == -1):
-                        print('NO SPACE IN DRUM')
-                        return
-                    drum[drum_index:drum_index+10] = ['' for i in range(10)]
-                    cur_pcb.O.append(drum_index)
-                    cur_pcb.empty_drum_indices.append(drum_index)
-                    drum_index += 10
-                    cur_pcb.op_index_check += 1
-                    lq.insert(0, cur_pcb)
-                    print("lq check in if",cur_pcb.op_index_check," ", cur_pcb.TLL)
-
-                if(cur_pcb.op_index_check == cur_pcb.TLL):
-                    print("after lq check")
-                    for index in cur_pcb.supervisory_indices:
-                        supervisory_storage[index] = [
-                            ["\0" for i in range(4)] for j in range(10)]
-                        buffer_status[index] = 0
-                    #lq.append(cur_pcb)
-                    # task = 'LD'
-                    # print("hello buns")
-                    # print("New current pcb",cur_pcb.P)
-                    # print("lqam",lq_am)
-            # pcb=lq[0]
-            #print("checking data index",pcb.supervisory_indices)
-            
-        elif task == 'OS':
-            print("in OS")
-            if(len(tq)!=0):
-                pcb=tq.pop(0)
-                print("in os LLC = ",pcb.LLC)
-                if(pcb.LLC==0):
+                    l=""
+                    if (pcb.terminate_code== 1):
+                        l="Out of Data Error\n\n"
+                    elif (pcb.terminate_code == 2):
+                        l="Line Limit Exceeded\n\n "
+                    elif (pcb.terminate_code == 3):
+                        l="Time Limit Exceeded\n\n"
+                    elif (pcb.terminate_code == 4):
+                        l="Operation Code Error\n\n"
+                    elif (pcb.terminate_code == 5):
+                        l="Operand Error\n\n"
+                    elif (pcb.terminate_code == 6):
+                        l="Invalid Page Fault\n\n"
+                    
                     eb = [['\0' for i in range(4)] for j in range(10)]
                     for i in range(len(buffer_status)):
                         if(buffer_status[i] == 0):
@@ -368,137 +447,119 @@ def interrupt_routine(rnum):
                             # eb=supervisory_storage[i]
                             buffer_status[i] = 1
                             break
-                    eb[0][0]='\n'
-                    eb[0][1]='\n'
-                    ofbq.append(eb)
-                    for x in pcb.empty_drum_indices:
-                        for i in range(x,x+10):
-                            drum[i]=['\0' for j in range(4)]
-                    if(op_flag==1):
-                        op_flag+=1
-                        IOI+=2
-                        start_channel(2)
-                    return
-
-                eb = [['\0' for i in range(4)] for j in range(10)]
-                for i in range(len(buffer_status)):
-                    if(buffer_status[i] == 0):
-                        #print("i of supervisory", i)
-                        # eb=supervisory_storage[i]
-                        buffer_status[i] = 1
-                        break
-                index=pcb.O.pop(0)
-                eb=drum[index:index+10]
-                ofbq.append(eb)
-
-                drum[index:index+10]=[['\0' for i in range (4)] for j in range (10)]
-
-                pcb.LLC-=1                          ##need to be looked later
-                if(pcb.LLC==0):
-                    eb = [['\0' for i in range(4)] for j in range(10)]
-                    for i in range(len(buffer_status)):
-                        if(buffer_status[i] == 0):
-                            #print("i of supervisory", i)
-                            # eb=supervisory_storage[i]
-                            buffer_status[i] = 1
-                            break
-                    eb[0][0]='\n'
-                    eb[0][1]='\n'
+                    line_ind=0
+                    for i in range(10):
+                        for j in range(4):
+                            if(line_ind==len(l)):
+                                break
+                            else:
+                                eb[i][j]=l[line_ind]
+                                line_ind+=1
                     ofbq.append(eb)
                     for x in pcb.empty_drum_indices:
                         drum[x:x+10]=[['\0' for i in range (4)] for j in range (10)]
-                    display(drum,500)
-                    ##need to add code to empty drum
-                else:
-                    tq.insert(0,pcb)
-                print("op flag",op_flag)
                 if(op_flag==1):
                     op_flag+=1
                     IOI+=2
-                    start_channel(2)
+                    start_channel(2)    
 
         elif task == 'LD':
-            if((len(lq) != 0) and (mem_flag==True)):
+            # display(drum,150)
+            if((len(lq) != 0) ):
                 # print("\n\nIn Load...\n\n")
-                mem_flag=False
+                # mem_flag=False
                 mem_available=False
                 cur_pcb = lq.pop(0)
                 # print("Element from lq_am",cur_pcb)
                 # initialise page table for the process
-                frame_num = (random.randint(0, 29))
-                used_frames.add(frame_num)   # add frame to used frames set
-                frame_num *= 10
-                # initialise page table register
-                PTR=[0 for i in range(4)]
-                PTR[0] = 0
-                PTR[1] = frame_num // 100
-                frame_num = frame_num % 100
-                PTR[2] = frame_num // 10
-                PTR[3] = frame_num % 10
-                cur_pcb.PTR = PTR   # Save PTR into PCB
+                if(cur_pcb.PTR[0]==-1):
+                    frame_num = (random.randint(0, 29))
+                    used_frames.add(frame_num)   # add frame to used frames set
+                    cur_pcb.used_mem_loc.append(frame_num)
+                    frame_num *= 10
+                    # initialise page table register
+                    PTR=[0 for i in range(4)]
+                    PTR[0] = 0
+                    PTR[1] = frame_num // 100
+                    frame_num = frame_num % 100
+                    PTR[2] = frame_num // 10
+                    PTR[3] = frame_num % 10
+                    cur_pcb.PTR = PTR   # Save PTR into PCB
                 # print("\n\ncurPTR\n\n",cur_pcb.PTR)
                 # initialising memory frame and adding it to Page Table
-                frame_num_prog = random.randint(0, 29)
-                while frame_num_prog in used_frames:  # finding unique frame
-                    frame_num_prog = random.randint(0, 29)
-                used_frames.add(frame_num_prog)
-                
-                pt_num = int(PTR[1]) * 100 + int(PTR[2]) * 10 + int(
-                    PTR[3])  # updating page table entry
-                
-                print("\n\npt_num ",pt_num," \n\n")
-                memory[pt_num][2] = frame_num_prog // 10
-                memory[pt_num][3] = frame_num_prog % 10
-                memory[pt_num][0] = 0
-                memory[pt_num][1] = 0
-                i = 0
-
-                frame_num_p = frame_num_prog * 10  # address where program is stored
-
-                print("\ncur_pcb contents",cur_pcb.P)
-                print("PCB id",cur_pcb.job_id)
                 if(len(cur_pcb.P)!=0):
+                    frame_num_prog = random.randint(0, 29)
+                    while frame_num_prog in used_frames:  # finding unique frame
+                        frame_num_prog = random.randint(0, 29)
+                    used_frames.add(frame_num_prog)
+                    cur_pcb.used_mem_loc.append(frame_num_prog)
+                    
+                    pt_num = int(cur_pcb.PTR[1]) * 100 + int(cur_pcb.PTR[2]) * 10 + int(
+                        cur_pcb.PTR[3])  # updating page table entry
+                    while(memory[pt_num][0]!='\0'):
+                        pt_num+=1
+                    # print("\n\npt_num ",pt_num," \n\n")
+                    memory[pt_num][2] = frame_num_prog // 10
+                    memory[pt_num][3] = frame_num_prog % 10
+                    memory[pt_num][0] = 0
+                    memory[pt_num][1] = 0
+                    i = 0
+
+                    frame_num_p = frame_num_prog * 10  # address where program is stored
+
+                # print("\ncur_pcb contents",cur_pcb.P)
+                # print("PCB id",cur_pcb.job_id)
+                
                     index= cur_pcb.P.pop(0)
                     memory[frame_num_p:frame_num_p+10] = drum[index:index+10]
                 # print(drum[index:index+10])
                 #display(memory,300)
+                # print("hello bunny")
                 if(len(cur_pcb.P)!=0):
                     lq.insert(0,cur_pcb)
+                    return
                 else:
+                    # mem_flag=True
+                    print("balaji",cur_pcb.job_id)
+                    # display(drum,150)
                     rq.append(cur_pcb)
-            else:
-                print("else of drum")
-                if(len(lq)!=0):
-                    cur_pcb=lq.pop(0)
-                    if(len(cur_pcb.P)!=0):
-                        frame_num_prog = random.randint(0, 29)
-                        while frame_num_prog in used_frames:  # finding unique frame
-                            frame_num_prog = random.randint(0, 29)
-                        used_frames.add(frame_num_prog)
+            # else:
+            #     # print("else of drum")
+            #     if(len(lq)!=0):
+            #         print("lq in ld",len(lq))
+            #         cur_pcb=lq.pop(0)
+            #         if(len(cur_pcb.P)!=0):
+            #             frame_num_prog = random.randint(0, 29)
+            #             while frame_num_prog in used_frames:  # finding unique frame
+            #                 frame_num_prog = random.randint(0, 29)
+            #             used_frames.add(frame_num_prog)
+            #             cur_pcb.used_mem_loc.append(frame_num_prog)
+            #             pt_num = int(cur_pcb.PTR[1]) * 100 + int(cur_pcb.PTR[2]) * 10 + int(cur_pcb.PTR[3])
+            #             while(memory[pt_num][0]!='\0'):
+            #                 pt_num+=1
+            #             memory[pt_num][2] = frame_num_prog // 10
+            #             memory[pt_num][3] = frame_num_prog % 10
+            #             memory[pt_num][0] = 0
+            #             memory[pt_num][1] = 0
 
-                        pt_num = int(cur_pcb.PTR[1]) * 100 + int(cur_pcb.PTR[2]) * 10 + int(cur_pcb.PTR[3])
-                        while(memory[pt_num][0]!='\0'):
-                            pt_num+=1
-                        print("After PTR",pt_num)
-                        memory[pt_num][2] = frame_num_prog // 10
-                        memory[pt_num][3] = frame_num_prog % 10
-                        memory[pt_num][0] = 0
-                        memory[pt_num][1] = 0
-
-                        frame_num_p = frame_num_prog * 10
+            #             frame_num_p = frame_num_prog * 10
                         
-                        index= cur_pcb.P.pop(0)
-                        memory[frame_num_p:frame_num_p+10] = drum[index:index+10]
-                        lq.insert(0,cur_pcb)
-                        
+            #             index= cur_pcb.P.pop(0)
+            #             memory[frame_num_p:frame_num_p+10] = drum[index:index+10]
+            #             lq.insert(0,cur_pcb)
 
-                    if(len(cur_pcb.P)==0):
-                        lq.pop(0)
-                        rq.append(cur_pcb)
-                        mem_flag=True        
 
-        elif task == 'RD':
-            #print("in rd length of ioq",len(ioq))
+            #         if(len(cur_pcb.P)==0):
+            #             lq.pop(0)
+            #             print("balaji2",cur_pcb.job_id)
+            #             rq.append(cur_pcb)
+            #             display(drum,150)
+            #             mem_flag=True        
+            #         else:
+            #             return
+            #         print("lq in ld",len(lq))
+        
+        elif task == 'RD':            
             task=''
             if(len(ioq)!=0):
                 pcb=ioq.pop(0)
@@ -506,12 +567,10 @@ def interrupt_routine(rnum):
                 if(len(pcb.D)!=0):
                     index=pcb.D.pop(0)
                     memory[pcb.address:pcb.address+10]=drum[index:index+10]
-                    rq.append(pcb)
-                    
+                    rq.append(pcb)     
                 else:
-                    pcb.error=1
+                    pcb.terminate_code=1
                     tq.append(pcb)        ##needs to be changed
-                print("Length of rq in RD",len(rq))
                 
         elif task == 'WT':
             task=''
@@ -527,16 +586,9 @@ def interrupt_routine(rnum):
                     rq.append(pcb)
                     
                 else:
-                    pcb.error=2
+                    pcb.terminate_code=2
                     tq.append(pcb)
 
-        print("\n\nLength of rq",len(rq))
-        print("Length of ifbq",len(ifbq))
-        print("Length of ofbq",len(ofbq))
-        print("Length of ioq",len(ioq))
-        print("Length of lq",len(lq))
-        print("Length of tq",len(tq))
-        print("\n\n")
         if(len(tq)!=0):
             for i in range(len(buffer_status)):
                 if(buffer_status[i] == 0):
@@ -548,7 +600,7 @@ def interrupt_routine(rnum):
                 task='OS'
                 start_channel(3)
                 return
-        if(len(ifbq)):
+        if(len(ifbq)!=0):
             drum_index = free_drum_track(drum_index)
             if(drum_index != -1):
                 task='IS'
@@ -563,12 +615,10 @@ def interrupt_routine(rnum):
         if(len(ioq)!=0):
             pcb=ioq[0]
             print(pcb.read," flags ",pcb.write)
-            print("in IR",pcb.LLC," ",pcb.TLL)
-            print("in ir flags",pcb.read," ",pcb.write)
             if(pcb.read):
                 if(len(pcb.D)<=0):
                     pcb=ioq.pop(0)
-                    pcb.error=3
+                    pcb.terminate_code=3
                     tq.append(pcb)
                 else:
                     task='RD'
@@ -576,19 +626,18 @@ def interrupt_routine(rnum):
                 return
             if(pcb.write):
                 print("in IR",pcb.LLC," ",pcb.TLL)
-                if(pcb.LLC>pcb.TLL):
+                if(pcb.LLC>pcb.TLL or pcb.TLL==0):
                     pcb=ioq.pop(0)
-                    pcb.error=2
+                    pcb.terminate_code=2
                     tq.append(pcb)
                 else:
                     task='WT'
                     start_channel(3)
                 return
-        print("CH after ch3 in end",CH)
 
 def master_mode():
     global m, ch1,mem_available, ch2, ch3, IR, IC, R,task, C, SI, PI, TI, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
-    print("interrupt master mode",SI," ",PI," ",TI)
+    # print("interrupt master mode",SI," ",PI," ",TI)
     if(len(rq) != 0):
         pcb = rq[0]
         
@@ -598,7 +647,7 @@ def master_mode():
                     # Operation Code Error
                     rq[0].terminate_code = 4
                     tq.append(rq[0])
-                    rq.pop()
+                    rq.pop(0)
                     memory = [['\0' for i in range(4)] for j in range(300)]
                     IR = [0 for i in range(4)]
                     
@@ -609,7 +658,7 @@ def master_mode():
                     # Operand Error
                     rq[0].terminate_code = 5
                     tq.append(rq[0])
-                    rq.pop()
+                    rq.pop(0)
                     memory = [['\0' for i in range(4)] for j in range(300)]
                     IR = [0 for i in range(4)]
                     
@@ -617,9 +666,9 @@ def master_mode():
                     C = False
 
                 elif (PI == 3):  # page fault
-                    print("valid page fault in master mode")
                     if (valid):  # valid argument passed to master mode function
-                        valid_page_fault(pcb.PTR)
+                        # if()
+                        valid_page_fault(pcb)
                         # rq.append(rq[0])              ##needs to be changed
                         # rq.pop()
 
@@ -627,7 +676,7 @@ def master_mode():
                         # invalid page fault
                         rq[0].terminate_code = 6
                         tq.append(rq[0])
-                        rq.pop()
+                        rq.pop(0)
                         memory = [['\0' for i in range(4)] for j in range(300)]
                         IR = [0 for i in range(4)]
                         
@@ -640,15 +689,15 @@ def master_mode():
                     # rq[0].read = True
                     # rq[0].write= False
                     ioq.append(rq[0])
-                    rq.pop()
+                    rq.pop(0)
 
                 elif (SI == 2):  # write function PD
                     # move PCB from RQ TO IOQ WRITE
                     # rq[0].read=False
                     # rq[0].write = True
                     ioq.append(rq[0])
-                    print("length of ioq in SI=2",len(ioq))
-                    rq.pop()
+                    # print("length of ioq in SI=2",len(ioq))
+                    rq.pop(0)
 
                 elif (SI == 3):  # terminate successfully
                     # MOVE PCB FROM RQ TO TQ
@@ -657,7 +706,7 @@ def master_mode():
                     tq.append(rq[0])
                     # task='OS'               ##need to be looked
                     rq.pop(0)
-                    print("length of rq after halt",len(rq))
+                    # print("length of rq after halt",len(rq))
                     #display(memory,300)
                     mem_available=True      ##need to be changed
                     memory = [['\0' for i in range(4)] for j in range(300)]
@@ -676,7 +725,7 @@ def master_mode():
             R = [0 for i in range(4)]
             C = False
 
-    print("IOI in master mode", IOI)            ##needs to be changed or checked
+    # print("IOI in master mode", IOI)            ##needs to be changed or checked
     if IOI == 1:
         interrupt_routine(1)
         
@@ -764,12 +813,14 @@ def address_map(VA,PTR):
     return RA
 
 
-def valid_page_fault(PTR):
+def valid_page_fault(pcb):
+    PTR=pcb.PTR
     print("PTR in valid page fault",PTR)
     frame_num_data = random.randint(0, 29)  # initialise a new frame for data
     while frame_num_data in used_frames:
         frame_num_data = random.randint(0, 29)
     used_frames.add(frame_num_data)
+    pcb.used_mem_loc.append(frame_num_data)
     # find page table index which is empty
     c_ptr = (int(PTR[1]) * 100 + int(PTR[2]) * 10 + int(PTR[3]))
     while (memory[c_ptr][0] != '\0'):
@@ -788,9 +839,11 @@ def execute_usrprgm():
     print("in execute length of rq",len(rq))
     if len(rq) == 0:
         return
-    time_counter = 0
+    for i in range(len(rq)):
+        print("job id in exec",rq[i].job_id)
     pcb = rq[0]    # get pcb of program to be executed
-    print("pcb in execute user function",pcb)
+    # display(drum,40)
+    print("pcb in execute user function",pcb.job_id)
     if (pcb.TTC <= pcb.TTL):   # checking for time limit exceeded error
 
         global  IR, R, C, T, SI, TI, PI, pd_error
@@ -800,9 +853,11 @@ def execute_usrprgm():
         TI = 0
         # converting virtual address to real addresss
         inst_count = address_map(10 * pcb.curr_IC[0] + pcb.curr_IC[1],pcb.PTR) 
+        print("inst count",inst_count)
         if (inst_count == -1):  # master mode - operand error
             PI = 2
             return 
+        print("tll in exec",pcb.TLL)
         IR = memory[inst_count]
         print("\n\nIR\n\n", IR)
         pcb.curr_IC[1] += 1  # incrementing IC
@@ -882,12 +937,13 @@ def execute_usrprgm():
             pcb.address=real_address
             ioq.append(pcb)
             rq.pop(0)
-            # task='RD'
+            task='RD'
             return
             # GD ERROR to be handled in master mode
 
         elif inst == "PD":
             print("real address in pd",real_address)
+
             if (real_address == -1):  # invalid page fault
                 PI = 3
                 valid = False
@@ -898,9 +954,9 @@ def execute_usrprgm():
             pcb.write=True
             print("in exec flags",pcb.write)
             pcb.address=real_address
-            ioq.append(pcb)
+            ioq.append(pcb)           
             rq.pop(0)
-            # task='WT'
+            task='WT'
             return
                 # PD ERROR TO BE HANDLED IN MASTER MODE
             #put_data(int(IR[2]) * 10 + int(IR[3]))

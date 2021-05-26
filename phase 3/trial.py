@@ -1,5 +1,6 @@
 from ast import Pass
 import random
+from re import I
 
 
 class PCB:
@@ -12,8 +13,7 @@ class PCB:
         self.TSC = tsc  # time slice counter
         self.curr_IC = [0 for i in range(2)]
         self.PTR = [-1 for i in range(4)]
-        self.read = False
-        self.write = False
+        self.rw=''
         self.program_index = 0
         self.data_index = 0
         self.program_frames = 0
@@ -100,7 +100,7 @@ def start():
     print("IOI in start", IOI)
     simulate()
     master_mode()
-    while ((len(rq) > 0 or len(ifbq) > 0 or len(tq)>0 or len(ofbq) > 0 or len(ioq)>0 or len(lq_am)>0 or len(lq)>0 or time<6) and (time<100)):
+    while ((len(rq) > 0 or len(ifbq) > 0 or len(tq)>0 or len(ofbq) > 0 or len(ioq)>0 or len(lq_am)>0 or len(lq)>0 or time<6) and (time<600)):
         print("Length of rq",len(rq))
         print("Length of ifbq",len(ifbq))
         print("Length of ofbq",len(ofbq))
@@ -219,8 +219,6 @@ def interrupt_routine(rnum):
                     pcb.TTL = int(time)
                     pcb.TLL = int(lines_printed)
                     print("TLL in amj",pcb.TLL)
-                    # frame_num = (random.randint(0, 29))
-                    # used_frames.add(frame_num)
                     counter_for_job = 0
                     line_index += 12
 
@@ -517,10 +515,10 @@ def interrupt_routine(rnum):
             
         
         elif task == 'RD':            
-            task=''
             if(len(ioq)!=0):
+                task=''
                 pcb=ioq.pop(0)
-                pcb.read=False
+                pcb.rw=''
                 if(len(pcb.D)!=0):
                     index=pcb.D.pop(0)
                     memory[pcb.address:pcb.address+10]=drum[index:index+10]
@@ -528,12 +526,14 @@ def interrupt_routine(rnum):
                 else:
                     pcb.terminate_code=1
                     tq.append(pcb)        ##needs to be changed
+                return
                 
         elif task == 'WT':
-            task=''
+            
             if(len(ioq)!=0):
+                task=''
                 pcb=ioq.pop(0)
-                pcb.write=False
+                pcb.rw=''
                 print("in WT ",pcb.LLC," ",pcb.TLL," ",pcb.job_id)
                 if(pcb.LLC< pcb.TLL):
                     index=pcb.O.pop(0)
@@ -545,6 +545,7 @@ def interrupt_routine(rnum):
                 else:
                     pcb.terminate_code=2
                     tq.append(pcb)
+                return
 
         if(len(tq)!=0):
             for i in range(len(buffer_status)):
@@ -573,22 +574,25 @@ def interrupt_routine(rnum):
 
         if(len(ioq)!=0):
             pcb=ioq[0]
-            print(pcb.read," flags ",pcb.write)
-            if(pcb.read):
+            for i in range (len(ioq)):
+                print("rw in ioq",ioq[i].rw," ", len(ioq))
+            print(" flags ",pcb.rw)
+            if(pcb.rw=='RD'):
                 if(len(pcb.D)<=0):
                     pcb=ioq.pop(0)
                     pcb.terminate_code=3
                     
                     temp=[['\0' for i in range (4)] for j in range (10)]
                     for i in range (len(pcb.used_mem_loc)):
-                        memory[i:i+10]=temp[0:10]
+                        memory[i*10:(i*10)+10]=temp[0:10]
+                        used_frames.remove(i)
                     tq.append(pcb)
                     mem_available=True
                 else:
                     task='RD'
                     start_channel(3)
                 return
-            if(pcb.write):
+            if(pcb.rw=='WT'):
                 print("in IR",pcb.LLC," ",pcb.TLL)
                 if(pcb.LLC>pcb.TLL or pcb.TLL==0):
                     pcb=ioq.pop(0)
@@ -596,7 +600,9 @@ def interrupt_routine(rnum):
                     
                     temp=[['\0' for i in range (4)] for j in range (10)]
                     for i in range (len(pcb.used_mem_loc)):
-                        memory[i:i+10]=temp[0:10]
+                        memory[i*10:(i*10)+10]=temp[0:10]
+                        print("used frames",used)
+                        used_frames.remove(i)
                     tq.append(pcb)
                     mem_available=True
                 else:
@@ -620,7 +626,8 @@ def master_mode():
                     
                     temp=[['\0' for i in range (4)] for j in range (10)]
                     for i in range (len(rq[0].used_mem_loc)):
-                        memory[i:i+10]=temp[0:10]
+                        memory[i*10:(i*10)+10]=temp[0:10]
+                        # used_frames.remove(i)
                     IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     rq.pop(0)
@@ -635,7 +642,8 @@ def master_mode():
                     
                     temp=[['\0' for i in range (4)] for j in range (10)]
                     for i in range (len(rq[0].used_mem_loc)):
-                        memory[i:i+10]=temp[0:10]
+                        memory[i*10:(i*10)+10]=temp[0:10]
+                        # used_frames.remove(i)
                     IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     rq.pop(0)
@@ -657,7 +665,8 @@ def master_mode():
                         
                         temp=[['\0' for i in range (4)] for j in range (10)]
                         for i in range (len(rq[0].used_mem_loc)):
-                            memory[i:i+10]=temp[0:10]
+                            memory[i*10:(i*10)+10]=temp[0:10]
+                            # used_frames.remove(i)
                         tq.append(rq[0])
                         rq.pop(0)
                         IR = [0 for i in range(4)]
@@ -670,16 +679,18 @@ def master_mode():
                     # move PCB from RQ TO IOQ READ
                     # rq[0].read = True
                     # rq[0].write= False
-                    ioq.append(rq[0])
-                    rq.pop(0)
+                    # ioq.append(rq[0])
+                    # rq.pop(0)
+                    pass
 
                 elif (SI == 2):  # write function PD
                     # move PCB from RQ TO IOQ WRITE
                     # rq[0].read=False
                     # rq[0].write = True
-                    ioq.append(rq[0])
-                    # print("length of ioq in SI=2",len(ioq))
-                    rq.pop(0)
+                    # ioq.append(rq[0])
+                    # # print("length of ioq in SI=2",len(ioq))
+                    # rq.pop(0)
+                    pass
 
                 elif (SI == 3):  # terminate successfully
                     # MOVE PCB FROM RQ TO TQ
@@ -691,7 +702,8 @@ def master_mode():
                     mem_available=True      ##need to be changed
                     temp=[['\0' for i in range (4)] for j in range (10)]
                     for i in range (len(rq[0].used_mem_loc)):
-                        memory[i:i+10]=temp[0:10]
+                        memory[i*10:(i*10)+10]=temp[0:10]
+                        # used_frames.remove(i)
                     IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     # task='OS'               ##need to be looked
@@ -701,9 +713,14 @@ def master_mode():
 
         elif (TI == 2):
             rq[0].terminate_code = 3
+            
+            temp=[['\0' for i in range (4)] for j in range (10)]
+            for i in range (len(rq[0].used_mem_loc)):
+                memory[i*10:(i*10)+10]=temp[0:10]
+                # used_frames.remove(i)
+
             tq.append(rq[0])
             rq.pop()
-            memory = [['\0' for i in range(4)] for j in range(300)]
             IR = [0 for i in range(4)]
             mem_available=True
             R = [0 for i in range(4)]
@@ -916,11 +933,11 @@ def execute_usrprgm():
             SI = 1
             print("fun in GD")
             # pcb.write=False
-            pcb.read=True
+            pcb.rw='RD'
             pcb.address=real_address
             ioq.append(pcb)
             rq.pop(0)
-            task='RD'
+            # task='RD'
             return
             # GD ERROR to be handled in master mode
 
@@ -934,12 +951,12 @@ def execute_usrprgm():
             
             SI = 2
             # pcb.read=False
-            pcb.write=True
-            print("in exec flags",pcb.write)
+            pcb.rw='WT'
+            print("in exec write flags",pcb.rw)
             pcb.address=real_address
             ioq.append(pcb)           
             rq.pop(0)
-            task='WT'
+            # task='WT'
             return
                 # PD ERROR TO BE HANDLED IN MASTER MODE
             #put_data(int(IR[2]) * 10 + int(IR[3]))

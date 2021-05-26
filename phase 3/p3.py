@@ -1,5 +1,6 @@
 from ast import Pass
 import random
+from re import I
 
 
 class PCB:
@@ -12,8 +13,7 @@ class PCB:
         self.TSC = tsc  # time slice counter
         self.curr_IC = [0 for i in range(2)]
         self.PTR = [-1 for i in range(4)]
-        self.read = False
-        self.write = False
+        self.rw=''
         self.program_index = 0
         self.data_index = 0
         self.program_frames = 0
@@ -27,7 +27,7 @@ class PCB:
         self.D = []
         self.O = []
         self.empty_drum_indices=[]
-        self.real_address = 0
+        self.address = 0
         self.error=0
         self.used_mem_loc=[]
 
@@ -93,20 +93,21 @@ def set_variables():
 
 
 def start():
-    global m, ch1, time,ch2, ch3, IR, IC, R, C, SI, PI, TI, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, buffer_status
+    global m, ch1, time,ch2, ch3, IR, IC, R, C, SI, PI, TI, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq,lq_am, IOI, CHT, buffer_status
     set_variables()
     IOI = 1
     start_channel(1)
     print("IOI in start", IOI)
     simulate()
     master_mode()
-    while ((len(rq) > 0 or len(ifbq) > 0 or len(tq)>0 or len(ofbq) > 0 or len(ioq)>0 or len(lq)>0 or time<6) and (time<70)):
+    while ((len(rq) > 0 or len(ifbq) > 0 or len(tq)>0 or len(ofbq) > 0 or len(ioq)>0 or len(lq_am)>0 or len(lq)>0 or time<6) and (time<600)):
         print("Length of rq",len(rq))
         print("Length of ifbq",len(ifbq))
         print("Length of ofbq",len(ofbq))
         print("Length of ioq",len(ioq))
         print("Length of lq",len(lq))
         print("Length of tq",len(tq))
+        print("Length of lq_am",len(lq_am))
         print("CH",CH)
         execute_usrprgm()
         simulate()
@@ -218,8 +219,6 @@ def interrupt_routine(rnum):
                     pcb.TTL = int(time)
                     pcb.TLL = int(lines_printed)
                     print("TLL in amj",pcb.TLL)
-                    # frame_num = (random.randint(0, 29))
-                    # used_frames.add(frame_num)
                     counter_for_job = 0
                     line_index += 12
 
@@ -293,7 +292,6 @@ def interrupt_routine(rnum):
                 
                 if(len(ifbq) == 0 and cur_pcb.op_index_check == cur_pcb.TLL and cur_pcb.TLL!=0):
                     task='LD'
-                    lq.insert(0,cur_pcb)
 
                 print(cur_pcb.program_index_check," ",  cur_pcb.program_frames," ",cur_pcb.data_index_check," ",cur_pcb.data_frames," ",cur_pcb.op_index_check," ",cur_pcb.TLL)
                 if(cur_pcb.program_index_check < cur_pcb.program_frames):
@@ -320,8 +318,6 @@ def interrupt_routine(rnum):
                     buffer_status[sindex] = 0
                     print("lq in is",len(lq))
                 
-                # if((cur_pcb.program_index_check == cur_pcb.program_frames) and (cur_pcb.data_index_check == cur_pcb.data_frames) and cur_pcb.data_index_check == cur_pcb.data_frames):
-                #     lq.insert(0,cur_pcb)
 
                 elif((cur_pcb.program_index_check == cur_pcb.program_frames) and (cur_pcb.data_index_check < cur_pcb.data_frames)):
                     #for i in range(cur_pcb.data_frames):
@@ -348,7 +344,6 @@ def interrupt_routine(rnum):
                     supervisory_storage[sindex] = [
                                 ["\0" for i in range(4)] for j in range(10)]
                     buffer_status[sindex] = 0
-                    ##needs to be changed
                     if(cur_pcb.data_index_check == cur_pcb.data_frames):
                         for k in range(cur_pcb.TLL):
                             drum_index = free_drum_track(drum_index)
@@ -363,7 +358,8 @@ def interrupt_routine(rnum):
                             cur_pcb.op_index_check += 1
                         # pcb=lq.pop(0)
                         # lq.append(pcb)
-                        lq.append(cur_pcb)
+                        lq.pop(0)
+                        lq_am.append(cur_pcb)
                     
 
         elif task == 'OS':
@@ -465,11 +461,10 @@ def interrupt_routine(rnum):
 
         elif task == 'LD':
             # display(drum,150)
-            if((len(lq) != 0) ):
+            if((len(lq_am) != 0) ):
                 # print("\n\nIn Load...\n\n")
                 # mem_flag=False
-                mem_available=False
-                cur_pcb = lq.pop(0)
+                cur_pcb = lq_am.pop(0)
                 # print("Element from lq_am",cur_pcb)
                 # initialise page table for the process
                 if(cur_pcb.PTR[0]==-1):
@@ -507,63 +502,23 @@ def interrupt_routine(rnum):
 
                     frame_num_p = frame_num_prog * 10  # address where program is stored
 
-                # print("\ncur_pcb contents",cur_pcb.P)
-                # print("PCB id",cur_pcb.job_id)
                 
                     index= cur_pcb.P.pop(0)
                     memory[frame_num_p:frame_num_p+10] = drum[index:index+10]
-                # print(drum[index:index+10])
-                #display(memory,300)
-                # print("hello bunny")
+                
                 if(len(cur_pcb.P)!=0):
-                    lq.insert(0,cur_pcb)
+                    lq_am.insert(0,cur_pcb)
                     return
                 else:
-                    # mem_flag=True
                     print("balaji",cur_pcb.job_id)
-                    # display(drum,150)
                     rq.append(cur_pcb)
-            # else:
-            #     # print("else of drum")
-            #     if(len(lq)!=0):
-            #         print("lq in ld",len(lq))
-            #         cur_pcb=lq.pop(0)
-            #         if(len(cur_pcb.P)!=0):
-            #             frame_num_prog = random.randint(0, 29)
-            #             while frame_num_prog in used_frames:  # finding unique frame
-            #                 frame_num_prog = random.randint(0, 29)
-            #             used_frames.add(frame_num_prog)
-            #             cur_pcb.used_mem_loc.append(frame_num_prog)
-            #             pt_num = int(cur_pcb.PTR[1]) * 100 + int(cur_pcb.PTR[2]) * 10 + int(cur_pcb.PTR[3])
-            #             while(memory[pt_num][0]!='\0'):
-            #                 pt_num+=1
-            #             memory[pt_num][2] = frame_num_prog // 10
-            #             memory[pt_num][3] = frame_num_prog % 10
-            #             memory[pt_num][0] = 0
-            #             memory[pt_num][1] = 0
-
-            #             frame_num_p = frame_num_prog * 10
-                        
-            #             index= cur_pcb.P.pop(0)
-            #             memory[frame_num_p:frame_num_p+10] = drum[index:index+10]
-            #             lq.insert(0,cur_pcb)
-
-
-            #         if(len(cur_pcb.P)==0):
-            #             lq.pop(0)
-            #             print("balaji2",cur_pcb.job_id)
-            #             rq.append(cur_pcb)
-            #             display(drum,150)
-            #             mem_flag=True        
-            #         else:
-            #             return
-            #         print("lq in ld",len(lq))
+            
         
         elif task == 'RD':            
-            task=''
             if(len(ioq)!=0):
+                task=''
                 pcb=ioq.pop(0)
-                pcb.read=False
+                pcb.rw=''
                 if(len(pcb.D)!=0):
                     index=pcb.D.pop(0)
                     memory[pcb.address:pcb.address+10]=drum[index:index+10]
@@ -571,13 +526,15 @@ def interrupt_routine(rnum):
                 else:
                     pcb.terminate_code=1
                     tq.append(pcb)        ##needs to be changed
+                return
                 
         elif task == 'WT':
-            task=''
+            
             if(len(ioq)!=0):
+                task=''
                 pcb=ioq.pop(0)
-                pcb.write=False
-                print("in WT ",pcb.LLC," ",pcb.TLL)
+                pcb.rw=''
+                print("in WT ",pcb.LLC," ",pcb.TLL," ",pcb.job_id)
                 if(pcb.LLC< pcb.TLL):
                     index=pcb.O.pop(0)
                     drum[index:index+10]=memory[pcb.address:pcb.address+10]
@@ -588,6 +545,7 @@ def interrupt_routine(rnum):
                 else:
                     pcb.terminate_code=2
                     tq.append(pcb)
+                return
 
         if(len(tq)!=0):
             for i in range(len(buffer_status)):
@@ -600,13 +558,15 @@ def interrupt_routine(rnum):
                 task='OS'
                 start_channel(3)
                 return
+
         if(len(ifbq)!=0):
             drum_index = free_drum_track(drum_index)
             if(drum_index != -1):
                 task='IS'
                 start_channel(3)
                 return
-        if(len(lq)!=0):
+
+        if(len(lq_am)!=0):
             if(mem_available):
                 task='LD'
                 start_channel(3)
@@ -614,22 +574,37 @@ def interrupt_routine(rnum):
 
         if(len(ioq)!=0):
             pcb=ioq[0]
-            print(pcb.read," flags ",pcb.write)
-            if(pcb.read):
+            for i in range (len(ioq)):
+                print("rw in ioq",ioq[i].rw," ", len(ioq))
+            print(" flags ",pcb.rw)
+            if(pcb.rw=='RD'):
                 if(len(pcb.D)<=0):
                     pcb=ioq.pop(0)
                     pcb.terminate_code=3
+                    
+                    temp=[['\0' for i in range (4)] for j in range (10)]
+                    for i in range (len(pcb.used_mem_loc)):
+                        memory[i*10:(i*10)+10]=temp[0:10]
+                        used_frames.remove(i)
                     tq.append(pcb)
+                    mem_available=True
                 else:
                     task='RD'
                     start_channel(3)
                 return
-            if(pcb.write):
+            if(pcb.rw=='WT'):
                 print("in IR",pcb.LLC," ",pcb.TLL)
                 if(pcb.LLC>pcb.TLL or pcb.TLL==0):
                     pcb=ioq.pop(0)
                     pcb.terminate_code=2
+                    
+                    temp=[['\0' for i in range (4)] for j in range (10)]
+                    for i in range (len(pcb.used_mem_loc)):
+                        memory[i*10:(i*10)+10]=temp[0:10]
+                        print("used frames",used)
+                        used_frames.remove(i)
                     tq.append(pcb)
+                    mem_available=True
                 else:
                     task='WT'
                     start_channel(3)
@@ -643,25 +618,36 @@ def master_mode():
         
         if (TI == 0 or TI == 1):
             if (SI == 0):
+                
                 if (PI == 1):
                     # Operation Code Error
                     rq[0].terminate_code = 4
+                    display(memory,300)
+                    
+                    temp=[['\0' for i in range (4)] for j in range (10)]
+                    for i in range (len(rq[0].used_mem_loc)):
+                        memory[i*10:(i*10)+10]=temp[0:10]
+                        # used_frames.remove(i)
+                    IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     rq.pop(0)
-                    memory = [['\0' for i in range(4)] for j in range(300)]
-                    IR = [0 for i in range(4)]
-                    
+                    mem_available=True
                     R = [0 for i in range(4)]
                     C = False
 
                 elif (PI == 2):
                     # Operand Error
                     rq[0].terminate_code = 5
+                    display(memory,300)
+                    
+                    temp=[['\0' for i in range (4)] for j in range (10)]
+                    for i in range (len(rq[0].used_mem_loc)):
+                        memory[i*10:(i*10)+10]=temp[0:10]
+                        # used_frames.remove(i)
+                    IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     rq.pop(0)
-                    memory = [['\0' for i in range(4)] for j in range(300)]
-                    IR = [0 for i in range(4)]
-                    
+                    mem_available=True
                     R = [0 for i in range(4)]
                     C = False
 
@@ -675,11 +661,16 @@ def master_mode():
                     else:
                         # invalid page fault
                         rq[0].terminate_code = 6
+                        display(memory,300)
+                        
+                        temp=[['\0' for i in range (4)] for j in range (10)]
+                        for i in range (len(rq[0].used_mem_loc)):
+                            memory[i*10:(i*10)+10]=temp[0:10]
+                            # used_frames.remove(i)
                         tq.append(rq[0])
                         rq.pop(0)
-                        memory = [['\0' for i in range(4)] for j in range(300)]
                         IR = [0 for i in range(4)]
-                        
+                        mem_available=True
                         R = [0 for i in range(4)]
                         C = False
 
@@ -688,40 +679,50 @@ def master_mode():
                     # move PCB from RQ TO IOQ READ
                     # rq[0].read = True
                     # rq[0].write= False
-                    ioq.append(rq[0])
-                    rq.pop(0)
+                    # ioq.append(rq[0])
+                    # rq.pop(0)
+                    pass
 
                 elif (SI == 2):  # write function PD
                     # move PCB from RQ TO IOQ WRITE
                     # rq[0].read=False
                     # rq[0].write = True
-                    ioq.append(rq[0])
-                    # print("length of ioq in SI=2",len(ioq))
-                    rq.pop(0)
+                    # ioq.append(rq[0])
+                    # # print("length of ioq in SI=2",len(ioq))
+                    # rq.pop(0)
+                    pass
 
                 elif (SI == 3):  # terminate successfully
                     # MOVE PCB FROM RQ TO TQ
-
+                    display(memory,300)
                     rq[0].terminate_code = 0
-                    tq.append(rq[0])
-                    # task='OS'               ##need to be looked
-                    rq.pop(0)
+                    
                     # print("length of rq after halt",len(rq))
                     #display(memory,300)
                     mem_available=True      ##need to be changed
-                    memory = [['\0' for i in range(4)] for j in range(300)]
+                    temp=[['\0' for i in range (4)] for j in range (10)]
+                    for i in range (len(rq[0].used_mem_loc)):
+                        memory[i*10:(i*10)+10]=temp[0:10]
+                        # used_frames.remove(i)
                     IR = [0 for i in range(4)]
-                    
+                    tq.append(rq[0])
+                    # task='OS'               ##need to be looked
+                    rq.pop(0)
                     R = [0 for i in range(4)]
                     C = False
 
         elif (TI == 2):
             rq[0].terminate_code = 3
+            
+            temp=[['\0' for i in range (4)] for j in range (10)]
+            for i in range (len(rq[0].used_mem_loc)):
+                memory[i*10:(i*10)+10]=temp[0:10]
+                # used_frames.remove(i)
+
             tq.append(rq[0])
             rq.pop()
-            memory = [['\0' for i in range(4)] for j in range(300)]
             IR = [0 for i in range(4)]
-            
+            mem_available=True
             R = [0 for i in range(4)]
             C = False
 
@@ -839,8 +840,7 @@ def execute_usrprgm():
     print("in execute length of rq",len(rq))
     if len(rq) == 0:
         return
-    for i in range(len(rq)):
-        print("job id in exec",rq[i].job_id)
+    time_counter = 0
     pcb = rq[0]    # get pcb of program to be executed
     # display(drum,40)
     print("pcb in execute user function",pcb.job_id)
@@ -933,11 +933,11 @@ def execute_usrprgm():
             SI = 1
             print("fun in GD")
             # pcb.write=False
-            pcb.read=True
+            pcb.rw='RD'
             pcb.address=real_address
             ioq.append(pcb)
             rq.pop(0)
-            task='RD'
+            # task='RD'
             return
             # GD ERROR to be handled in master mode
 
@@ -951,12 +951,12 @@ def execute_usrprgm():
             
             SI = 2
             # pcb.read=False
-            pcb.write=True
-            print("in exec flags",pcb.write)
+            pcb.rw='WT'
+            print("in exec write flags",pcb.rw)
             pcb.address=real_address
             ioq.append(pcb)           
             rq.pop(0)
-            task='WT'
+            # task='WT'
             return
                 # PD ERROR TO BE HANDLED IN MASTER MODE
             #put_data(int(IR[2]) * 10 + int(IR[3]))

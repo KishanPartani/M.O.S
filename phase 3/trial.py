@@ -149,6 +149,8 @@ def interrupt_routine(rnum):
     if(rnum == 1):
         #print("supervisory storage",supervisory_storage)
         global buffer_index
+        if(buffer_index == len(input_buffer)):
+            return
         pcb = PCB(0, 0, 0, 0, 0, 0)
         index = 0
         eb = [['\0' for i in range(4)] for j in range(10)]
@@ -161,11 +163,12 @@ def interrupt_routine(rnum):
         # code for interrupt routine 1
         pcb.supervisory_indices.append(i)
         # print("input buffer", input_buffer)
-        if(buffer_index == len(input_buffer)):
-            return
+        
         line = input_buffer[buffer_index]
         while(True):
             # print("PCB Contents", pcb.data_frames, " ", pcb.program_frames)
+            if(buffer_index == len(input_buffer)):
+                return
             if(line_index >= len(line)):
                 if(line[0] != '$'):
                     # print(eb)
@@ -229,6 +232,7 @@ def interrupt_routine(rnum):
                     counter_for_job = 1
                     line_index += 4
                     pcb.data_index = pcb.program_index+pcb.program_frames+1
+                    
                 elif(line[1:4] == 'END'):
                     supervisory_storage[i] = eb
                     print("END CARD")
@@ -268,8 +272,8 @@ def interrupt_routine(rnum):
 
             index = index+1
 
-        if(buffer_index < len(input_buffer)):
-            start_channel(1)
+        
+        start_channel(1)
 
     elif(rnum == 2):
 

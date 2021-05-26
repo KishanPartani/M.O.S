@@ -82,12 +82,12 @@ def set_variables():
     tq = []  # terminate queue
     used_frames = set()
     supervisory_storage = [
-        [['\0' for i in range(4)] for j in range(10)] for k in range(10)]
+        [['\0' for i in range(4)] for j in range(10)] for k in range(50)]
     memory = [['\0' for i in range(4)] for j in range(300)]
     drum = [['\0' for i in range(4)] for j in range(500)]
     opfile = open('output.txt', 'w')
     data_index = 0
-    buffer_status = [0 for i in range(10)]
+    buffer_status = [0 for i in range(50)]
     buffer_index = 0
     task = ''
     drum_index = 0
@@ -101,7 +101,7 @@ def start():
     print("IOI in start", IOI)
     simulate()
     master_mode()
-    while ((len(rq) > 0 or len(ifbq) > 0 or len(tq) > 0 or len(ofbq) > 0 or len(ioq) > 0 or len(lq_am) > 0 or len(lq) > 0 or time < 6) and (time < 600)):
+    while ((len(rq) > 0 or len(ifbq) > 0 or len(tq) > 0 or len(ofbq) > 0 or len(ioq) > 0 or len(lq_am) > 0 or len(lq) > 0 or time < 6)):
         print("Length of rq", len(rq))
         print("Length of ifbq", len(ifbq))
         print("Length of ofbq", len(ofbq))
@@ -145,30 +145,33 @@ def display(x, y):
 
 def interrupt_routine(rnum):
     print("interrrupt routine", rnum)
-    global buffer_index, inp_flag, mem_available, used_frames_size, op_flag, ifbq, ofbq, tq, input_buffer, counter_for_job, line_index, eb, IOI, task, lq, rq, drum_index, mem_flag, memory, drum
+    global buffer_index, inp_flag, mem_available, used_frames_size, op_flag, ifbq, ofbq, tq, input_buffer, counter_for_job, line_index, eb, IOI, task, lq, rq, drum_index, mem_flag, memory, drum, buffer_status
     if(rnum == 1):
         #print("supervisory storage",supervisory_storage)
         global buffer_index
-        if(buffer_index == len(input_buffer)):
-            return
         pcb = PCB(0, 0, 0, 0, 0, 0)
         index = 0
         eb = [['\0' for i in range(4)] for j in range(10)]
+        flag = False
         for i in range(len(buffer_status)):
             if(buffer_status[i] == 0):
-                #print("i of supervisory", i)
+                flag = True
+                # print("i of supervisory", i)
                 # eb=supervisory_storage[i]
                 buffer_status[i] = 1
                 break
+        # print("BINDEX", i, buffer_status, file=opfile)
+
+        if(i == len(buffer_status)-1 and flag == False):
+            return
         # code for interrupt routine 1
         pcb.supervisory_indices.append(i)
         # print("input buffer", input_buffer)
-        
+        if(buffer_index == len(input_buffer)):
+            return
         line = input_buffer[buffer_index]
         while(True):
             # print("PCB Contents", pcb.data_frames, " ", pcb.program_frames)
-            if(buffer_index == len(input_buffer)):
-                return
             if(line_index >= len(line)):
                 if(line[0] != '$'):
                     # print(eb)
@@ -178,15 +181,19 @@ def interrupt_routine(rnum):
                         pcb.program_frames += 1
                     elif(counter_for_job == 1):
                         pcb.data_frames += 1
+                    flag = False
                     for i in range(len(buffer_status)):
                         if(buffer_status[i] == 0):
                             #print("i of supervisory", i)
                             # eb=supervisory_storage[i]
+                            flag = True
                             eb = [['\0' for i in range(4)] for j in range(10)]
                             buffer_status[i] = 1
                             break
-                    if(i == len(buffer_status)):
-                        break
+                    # print("BINDEX", i, buffer_status, file=opfile)
+
+                    if(i == len(buffer_status)-1 and flag == False):
+                        return
                     pcb.supervisory_indices.append(i)
 
                 line_index = 0
@@ -206,14 +213,18 @@ def interrupt_routine(rnum):
                     pcb.program_frames += 1
                 elif(counter_for_job == 1):
                     pcb.data_frames += 1
-
+                flag = False
                 for i in range(len(buffer_status)):
                     if(buffer_status[i] == 0):
+                        flag = True
                         # eb=supervisory_storage[i]
                         #print("i of supervisory this", i)
                         buffer_status[i] = 1
                         eb = [['\0' for i in range(4)] for i in range(10)]
                         break
+                # print("BINDEX", i, buffer_status, file=opfile)
+                if(i == len(buffer_status) and flag == False):
+                    return
                 pcb.supervisory_indices.append(i)
 
             if (line[0].startswith('$')):
@@ -232,11 +243,10 @@ def interrupt_routine(rnum):
                     counter_for_job = 1
                     line_index += 4
                     pcb.data_index = pcb.program_index+pcb.program_frames+1
-                    
                 elif(line[1:4] == 'END'):
                     supervisory_storage[i] = eb
                     print("END CARD")
-                    print(pcb.job_id, pcb.data_frames,file=opfile)
+                    # print("JOBDATA", pcb.job_id, pcb.data_frames, file=opfile)
                     lq.append(pcb)
                     #print("JOB ID : ", pcb.job_id)
                     line_index += 4
@@ -272,8 +282,8 @@ def interrupt_routine(rnum):
 
             index = index+1
 
-        
-        start_channel(1)
+        if(buffer_index < len(input_buffer)):
+            start_channel(1)
 
     elif(rnum == 2):
 
@@ -289,6 +299,7 @@ def interrupt_routine(rnum):
         start_channel(2)
     elif(rnum == 3):
         if task == 'IS':
+            # print("IS STARTED", lq, file=opfile)
             print("in is after task", len(lq))
             if(free_drum_track() == -1):
                 print('NO SPACE IN DRUM')
@@ -300,7 +311,7 @@ def interrupt_routine(rnum):
                     task = 'LD'
 
                 print(cur_pcb.job_id, cur_pcb.program_index_check, " ",  cur_pcb.program_frames, " ", cur_pcb.data_index_check,
-                      " ", cur_pcb.data_frames, " ", cur_pcb.op_index_check, " ", cur_pcb.TLL, file=opfile)
+                      " ", cur_pcb.data_frames, " ", cur_pcb.op_index_check, " ", cur_pcb.TLL)
                 if(cur_pcb.program_index_check < cur_pcb.program_frames):
                     # for i in range(cur_pcb.program_frames):
                     print("hiii")
@@ -311,7 +322,7 @@ def interrupt_routine(rnum):
                         lq.insert(0, cur_pcb)
                         return
                     ap = ifbq.pop(0)
-                    print("IFBQ POPPED", ap, file=opfile)
+                    # print("IFBQ POPPED", ap, file=opfile)
                     drum[drum_index:drum_index+10] = ap
                     cur_pcb.P.append(drum_index)
                     cur_pcb.empty_drum_indices.append(drum_index)
@@ -323,6 +334,7 @@ def interrupt_routine(rnum):
                     supervisory_storage[sindex] = [
                         ["\0" for i in range(4)] for j in range(10)]
                     buffer_status[sindex] = 0
+                    # print("PROGRAM POPPED", buffer_status, file=opfile)
                     print("lq in is", len(lq))
 
                 elif((cur_pcb.program_index_check == cur_pcb.program_frames) and (cur_pcb.data_index_check < cur_pcb.data_frames)):
@@ -335,7 +347,7 @@ def interrupt_routine(rnum):
                         lq.insert(0, cur_pcb)
                         return
                     ap = ifbq.pop(0)
-                    print("IFBQ POPPED", ap, file=opfile)
+                    # print("IFBQ POPPED", ap, file=opfile)
 
                     drum[drum_index:drum_index+10] = ap
                     # drum[drum_index:drum_index+10] = ifbq.pop(0)
@@ -595,7 +607,7 @@ def interrupt_routine(rnum):
                     pcb.terminate_code = 3
 
                     temp = [['\0' for i in range(4)] for j in range(10)]
-                    for i in (rq[0].used_mem_loc):
+                    for i in (pcb.used_mem_loc):
                         memory[i*10:(i*10)+10] = temp[0:10]
                         print("used frames", used_frames)
                         used_frames.remove(i)
@@ -613,7 +625,8 @@ def interrupt_routine(rnum):
                     pcb.terminate_code = 2
 
                     temp = [['\0' for i in range(4)] for j in range(10)]
-                    for i in (rq[0].used_mem_loc):
+
+                    for i in (pcb.used_mem_loc):
                         memory[i*10:(i*10)+10] = temp[0:10]
                         print("used frames", used_frames)
                         used_frames.remove(i)
@@ -1017,3 +1030,8 @@ if __name__ == '__main__':
     # print("main started")
     print(input_buffer)
     start()
+    # with open("inp.txt", "r") as file:
+    #     input_buffer = file.readlines()
+    # # print("main started")
+    # print(input_buffer)
+    # start()

@@ -49,10 +49,9 @@ def print_drum(max_index=500):
 
 
 def set_variables():
-    global m,inp_flag,used_frames_size,time,mem_available, op_flag,drum_index,mem_flag, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, used_frames, memory, opfile, input_buffer, data_index, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CHT_TOT, valid, buffer_status, counter_for_job, line_index, buffer_index, task, lq_am
+    global m,inp_flag,time,mem_available, op_flag,drum_index,mem_flag, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, used_frames, memory, opfile, input_buffer, data_index, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CHT_TOT, valid, buffer_status, counter_for_job, line_index, buffer_index, task, lq_am
     m = 0
     time = 0
-    used_frames_size=0
     mem_available=True
     op_flag=1
     mem_flag=True
@@ -69,7 +68,7 @@ def set_variables():
     TS = 0
     IOI = 0
     inp_flag=True
-    CHT_TOT = [5, 5, 2]
+    CHT_TOT = [5, 2, 3]
     CH = [False for i in range(3)]  # channel flags
     CHT = [0 for i in range(3)]  # channel timers for all 3 channels
     ebq = []  # empty buffer queue
@@ -142,7 +141,7 @@ def display(x,y):
 
 def interrupt_routine(rnum):
     print("interrrupt routine", rnum)
-    global buffer_index,inp_flag,mem_available,used_frames_size,op_flag,ifbq,ofbq,tq, input_buffer, counter_for_job, line_index, eb, IOI, task, lq,rq, drum_index,mem_flag, memory,drum
+    global buffer_index,inp_flag,mem_available,op_flag,ifbq,ofbq,tq, input_buffer, counter_for_job, line_index, eb, IOI, task, lq,rq, drum_index,mem_flag, memory,drum
     if(rnum == 1):
         #print("supervisory storage",supervisory_storage)
         global buffer_index
@@ -161,6 +160,7 @@ def interrupt_routine(rnum):
         if(buffer_index == len(input_buffer)):
             return
         line = input_buffer[buffer_index]
+        print("lala",line)
         while(True):
             # print("PCB Contents", pcb.data_frames, " ", pcb.program_frames)
             if(line_index >= len(line)):
@@ -472,7 +472,6 @@ def interrupt_routine(rnum):
                     while frame_num in used_frames:  # finding unique frame
                         frame_num = random.randint(0, 29)
                     used_frames.add(frame_num)   # add frame to used frames set
-                    used_frames_size+=1
                     cur_pcb.used_mem_loc.append(frame_num)
                     frame_num *= 10
                     # initialise page table register
@@ -490,7 +489,6 @@ def interrupt_routine(rnum):
                     while frame_num_prog in used_frames:  # finding unique frame
                         frame_num_prog = random.randint(0, 29)
                     used_frames.add(frame_num_prog)
-                    used_frames_size+=1
                     cur_pcb.used_mem_loc.append(frame_num_prog)
                     
                     pt_num = int(cur_pcb.PTR[1]) * 100 + int(cur_pcb.PTR[2]) * 10 + int(
@@ -591,7 +589,6 @@ def interrupt_routine(rnum):
                         memory[i*10:(i*10)+10]=temp[0:10]
                         print("used frames",used_frames)
                         used_frames.remove(i)
-                        used_frames_size-=1
                     tq.append(pcb)
                     mem_available=True
                 else:
@@ -609,7 +606,6 @@ def interrupt_routine(rnum):
                         memory[i*10:(i*10)+10]=temp[0:10]
                         print("used frames",used_frames)
                         used_frames.remove(i)
-                        used_frames_size-=1
                     tq.append(pcb)
                     mem_available=True
                 else:
@@ -618,7 +614,7 @@ def interrupt_routine(rnum):
                 return
 
 def master_mode():
-    global m, ch1,mem_available, ch2, ch3, IR, IC, R,task, C, SI, PI, TI, used_frames,used_frames_size, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
+    global m, ch1,mem_available, ch2, ch3, IR, IC, R,task, C, SI, PI, TI, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
     # print("interrupt master mode",SI," ",PI," ",TI)
     if(len(rq) != 0):
         pcb = rq[0]
@@ -636,7 +632,6 @@ def master_mode():
                         memory[i*10:(i*10)+10]=temp[0:10]
                         # print("used frames",used_frames)
                         used_frames.remove(i)
-                        used_frames_size-=1
                     IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     rq.pop(0)
@@ -654,7 +649,6 @@ def master_mode():
                         memory[i*10:(i*10)+10]=temp[0:10]
                         # print("used frames",used_frames)
                         used_frames.remove(i)
-                        used_frames_size-=1
                     IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     rq.pop(0)
@@ -679,7 +673,6 @@ def master_mode():
                             memory[i*10:(i*10)+10]=temp[0:10]
                             # print("used frames",used_frames)
                             used_frames.remove(i)
-                            used_frames_size-=1
                         tq.append(rq[0])
                         rq.pop(0)
                         IR = [0 for i in range(4)]
@@ -694,8 +687,6 @@ def master_mode():
                     # rq[0].write= False
                     # ioq.append(rq[0])
                     # rq.pop(0)
-                    ioq.append(pcb)
-                    rq.pop(0)
                     pass
 
                 elif (SI == 2):  # write function PD
@@ -705,8 +696,6 @@ def master_mode():
                     # ioq.append(rq[0])
                     # # print("length of ioq in SI=2",len(ioq))
                     # rq.pop(0)
-                    ioq.append(pcb)
-                    rq.pop(0)
                     pass
 
                 elif (SI == 3):  # terminate successfully
@@ -723,7 +712,6 @@ def master_mode():
                         memory[i*10:(i*10)+10]=temp[0:10]
                         # print("used frames",used_frames)
                         used_frames.remove(i)
-                        used_frames_size-=1
                     IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     # task='OS'               ##need to be looked
@@ -739,7 +727,7 @@ def master_mode():
                 memory[i*10:(i*10)+10]=temp[0:10]
                 # print("used frames",used_frames)
                 used_frames.remove(i)
-                used_frames_size-=1
+
             tq.append(rq[0])
             rq.pop()
             IR = [0 for i in range(4)]
@@ -836,14 +824,12 @@ def address_map(VA,PTR):
 
 
 def valid_page_fault(pcb):
-    global used_frames_size,used_frames,memory
     PTR=pcb.PTR
     # print("PTR in valid page fault",PTR)
     frame_num_data = random.randint(0, 29)  # initialise a new frame for data
     while frame_num_data in used_frames:
         frame_num_data = random.randint(0, 29)
     used_frames.add(frame_num_data)
-    used_frames_size+=1
     pcb.used_mem_loc.append(frame_num_data)
     # find page table index which is empty
     c_ptr = (int(PTR[1]) * 100 + int(PTR[2]) * 10 + int(PTR[3]))
@@ -958,8 +944,8 @@ def execute_usrprgm():
             # pcb.write=False
             pcb.rw='RD'
             pcb.address=real_address
-            # ioq.append(pcb)
-            # rq.pop(0)
+            ioq.append(pcb)
+            rq.pop(0)
             # task='RD'
             return
             # GD ERROR to be handled in master mode
@@ -977,8 +963,8 @@ def execute_usrprgm():
             pcb.rw='WT'
             # print("in exec write flags",pcb.rw)
             pcb.address=real_address
-            # ioq.append(pcb)           
-            # rq.pop(0)
+            ioq.append(pcb)           
+            rq.pop(0)
             # task='WT'
             return
                 # PD ERROR TO BE HANDLED IN MASTER MODE

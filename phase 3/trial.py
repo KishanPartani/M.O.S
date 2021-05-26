@@ -469,6 +469,8 @@ def interrupt_routine(rnum):
                 # initialise page table for the process
                 if(cur_pcb.PTR[0]==-1):
                     frame_num = (random.randint(0, 29))
+                    while frame_num in used_frames:  # finding unique frame
+                        frame_num = random.randint(0, 29)
                     used_frames.add(frame_num)   # add frame to used frames set
                     cur_pcb.used_mem_loc.append(frame_num)
                     frame_num *= 10
@@ -583,8 +585,9 @@ def interrupt_routine(rnum):
                     pcb.terminate_code=3
                     
                     temp=[['\0' for i in range (4)] for j in range (10)]
-                    for i in range (len(pcb.used_mem_loc)):
+                    for i in (rq[0].used_mem_loc):
                         memory[i*10:(i*10)+10]=temp[0:10]
+                        print("used frames",used_frames)
                         used_frames.remove(i)
                     tq.append(pcb)
                     mem_available=True
@@ -599,9 +602,9 @@ def interrupt_routine(rnum):
                     pcb.terminate_code=2
                     
                     temp=[['\0' for i in range (4)] for j in range (10)]
-                    for i in range (len(pcb.used_mem_loc)):
+                    for i in (rq[0].used_mem_loc):
                         memory[i*10:(i*10)+10]=temp[0:10]
-                        print("used frames",used)
+                        print("used frames",used_frames)
                         used_frames.remove(i)
                     tq.append(pcb)
                     mem_available=True
@@ -625,9 +628,10 @@ def master_mode():
                     display(memory,300)
                     
                     temp=[['\0' for i in range (4)] for j in range (10)]
-                    for i in range (len(rq[0].used_mem_loc)):
+                    for i in (rq[0].used_mem_loc):
                         memory[i*10:(i*10)+10]=temp[0:10]
-                        # used_frames.remove(i)
+                        print("used frames",used_frames)
+                        used_frames.remove(i)
                     IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     rq.pop(0)
@@ -641,9 +645,10 @@ def master_mode():
                     display(memory,300)
                     
                     temp=[['\0' for i in range (4)] for j in range (10)]
-                    for i in range (len(rq[0].used_mem_loc)):
+                    for i in (rq[0].used_mem_loc):
                         memory[i*10:(i*10)+10]=temp[0:10]
-                        # used_frames.remove(i)
+                        print("used frames",used_frames)
+                        used_frames.remove(i)
                     IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     rq.pop(0)
@@ -664,9 +669,10 @@ def master_mode():
                         display(memory,300)
                         
                         temp=[['\0' for i in range (4)] for j in range (10)]
-                        for i in range (len(rq[0].used_mem_loc)):
+                        for i in (rq[0].used_mem_loc):
                             memory[i*10:(i*10)+10]=temp[0:10]
-                            # used_frames.remove(i)
+                            print("used frames",used_frames)
+                            used_frames.remove(i)
                         tq.append(rq[0])
                         rq.pop(0)
                         IR = [0 for i in range(4)]
@@ -701,9 +707,11 @@ def master_mode():
                     #display(memory,300)
                     mem_available=True      ##need to be changed
                     temp=[['\0' for i in range (4)] for j in range (10)]
-                    for i in range (len(rq[0].used_mem_loc)):
+                    print("before used frame")
+                    for i in (rq[0].used_mem_loc):
                         memory[i*10:(i*10)+10]=temp[0:10]
-                        # used_frames.remove(i)
+                        print("used frames",used_frames)
+                        used_frames.remove(i)
                     IR = [0 for i in range(4)]
                     tq.append(rq[0])
                     # task='OS'               ##need to be looked
@@ -715,9 +723,10 @@ def master_mode():
             rq[0].terminate_code = 3
             
             temp=[['\0' for i in range (4)] for j in range (10)]
-            for i in range (len(rq[0].used_mem_loc)):
+            for i in (rq[0].used_mem_loc):
                 memory[i*10:(i*10)+10]=temp[0:10]
-                # used_frames.remove(i)
+                print("used frames",used_frames)
+                used_frames.remove(i)
 
             tq.append(rq[0])
             rq.pop()
@@ -867,9 +876,7 @@ def execute_usrprgm():
         inst = "" + IR[0] + IR[1]
         print("IC in execute user prog",pcb.curr_IC)
         if (inst[0] != "H"):
-
             if ((IR[2].isnumeric() and IR[3].isnumeric()) == False):  # checking for operand error
-
                 PI = 2
                 return
             real_address = address_map(int(IR[2]) * 10 + int(IR[3]),pcb.PTR)

@@ -49,7 +49,7 @@ def print_drum(max_index=500):
 
 
 def set_variables():
-    global m, inp_flag, used_frames_size, time, mem_available, op_flag, drum_index, mem_flag, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, used_frames, memory, opfile, input_buffer, data_index, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CHT_TOT, valid, buffer_status, counter_for_job, line_index, buffer_index, task, lq_am
+    global m,f1, inp_flag, used_frames_size, time, mem_available, op_flag, drum_index, mem_flag, ch1, ch2, ch3, IR, IC, R, C, SI, PI, TI, used_frames, memory, opfile, input_buffer, data_index, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CHT_TOT, valid, buffer_status, counter_for_job, line_index, buffer_index, task, lq_am
     m = 0
     time = 0
     used_frames_size = 0
@@ -86,6 +86,7 @@ def set_variables():
     memory = [['\0' for i in range(4)] for j in range(300)]
     drum = [['\0' for i in range(4)] for j in range(500)]
     opfile = open('output.txt', 'w')
+    f1=open('debug.txt','w')
     data_index = 0
     buffer_status = [0 for i in range(50)]
     buffer_index = 0
@@ -94,21 +95,21 @@ def set_variables():
 
 
 def start():
-    global m, ch1, time, ch2, ch3, IR, IC, R, C, SI, PI, TI, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, lq_am, IOI, CHT, buffer_status
+    global m,f1, ch1, time, ch2, ch3, IR, IC, R, C, SI, PI, TI, used_frames, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, lq_am, IOI, CHT, buffer_status
     set_variables()
     IOI = 1
     start_channel(1)
-    print("Program Started")
+    print("Program Started",file=f1)
     simulate()
     master_mode()
     while ((len(rq) > 0 or len(ifbq) > 0 or len(tq) > 0 or len(ofbq) > 0 or len(ioq) > 0 or len(lq_am) > 0 or len(lq) > 0 or time < 6)):
-        print("Length of rq", len(rq))
-        print("Length of ifbq", len(ifbq))
-        print("Length of ofbq", len(ofbq))
-        print("Length of ioq", len(ioq))
-        print("Length of lq", len(lq))
-        print("Length of tq", len(tq))
-        print("Length of lq_am", len(lq_am))
+        print("Length of rq", len(rq),file=f1)
+        print("Length of ifbq", len(ifbq),file=f1)
+        print("Length of ofbq", len(ofbq),file=f1)
+        print("Length of ioq", len(ioq),file=f1)
+        print("Length of lq", len(lq),file=f1)
+        print("Length of tq", len(tq),file=f1)
+        print("Length of lq_am", len(lq_am),file=f1)
         execute_usrprgm()
         simulate()
         master_mode()
@@ -132,7 +133,7 @@ def display(x, y):
 
 
 def interrupt_routine(rnum):
-    print("Interrupt routine", rnum)
+    print("Interrupt routine", rnum,file=f1)
     global buffer_index, inp_flag, mem_available, used_frames_size, op_flag, ifbq, ofbq, tq, input_buffer, counter_for_job, line_index, eb, IOI, task, lq, rq, drum_index, mem_flag, memory, drum, buffer_status
     if(rnum == 1):
         global buffer_index
@@ -219,7 +220,6 @@ def interrupt_routine(rnum):
                     pcb.job_id = id  # initialize PCB    ##needs to be changed
                     pcb.TTL = int(time)
                     pcb.TLL = int(lines_printed)
-                    print("TLL in amj", pcb.TLL)
                     counter_for_job = 0
                     line_index += 12
 
@@ -229,8 +229,8 @@ def interrupt_routine(rnum):
                     pcb.data_index = pcb.program_index+pcb.program_frames+1
                 elif(line[1:4] == 'END'):
                     supervisory_storage[i] = eb
-                    print("END CARD")
-                    print("Loaded for Input Spooling", "\njob ID", pcb.job_id)
+                    print("END CARD",file=f1)
+                    print("Loaded for Input Spooling", "\njob ID", pcb.job_id,file=f1)
                     lq.append(pcb)
                     line_index += 4
                     buffer_index += 1
@@ -266,7 +266,7 @@ def interrupt_routine(rnum):
             start_channel(1)
 
     elif(rnum == 2):
-        print("CHANNEL 2 STARTED. WRITING TO LINE PRINTER")
+        print("CHANNEL 2 STARTED. WRITING TO LINE PRINTER",file=f1)
         if(len(ofbq) != 0):
             a = ofbq.pop(0)
             for i in range(10):
@@ -278,14 +278,14 @@ def interrupt_routine(rnum):
         start_channel(2)
     elif(rnum == 3):
         if task == 'IS':
-            print("INPUT SPOOLING STARTED")
+            print("INPUT SPOOLING STARTED",file=f1)
             if(free_drum_track() == -1):
-                print('NO SPACE IN DRUM')
+                print('NO SPACE IN DRUM',file=f1)
                 return
 
             if(len(lq) != 0):   # code for loading into drum
                 cur_pcb = lq.pop(0)
-                print("job id", cur_pcb.job_id)
+                print("job id", cur_pcb.job_id,file=f1)
                 if(len(ifbq) == 0 and cur_pcb.op_index_check == cur_pcb.TLL and cur_pcb.TLL != 0):
                     task = 'LD'
 
@@ -293,7 +293,7 @@ def interrupt_routine(rnum):
                     # for i in range(cur_pcb.program_frames):
                     drum_index = free_drum_track(drum_index)
                     if(drum_index == -1):
-                        print('NO SPACE IN DRUM')
+                        print('NO SPACE IN DRUM',file=f1)
                         lq.insert(0, cur_pcb)
                         return
                     ap = ifbq.pop(0)
@@ -314,7 +314,7 @@ def interrupt_routine(rnum):
                     # for i in range(cur_pcb.data_frames):
                     drum_index = free_drum_track(drum_index)
                     if(drum_index == -1):
-                        print('NO SPACE IN DRUM')
+                        print('NO SPACE IN DRUM',file=f1)
                         lq.insert(0, cur_pcb)
                         return
                     ap = ifbq.pop(0)
@@ -334,7 +334,7 @@ def interrupt_routine(rnum):
                         for k in range(cur_pcb.TLL):
                             drum_index = free_drum_track(drum_index)
                             if(drum_index == -1):
-                                print('NO SPACE IN DRUM')
+                                print('NO SPACE IN DRUM',file=f1)
                                 return
                             drum[drum_index:drum_index +
                                  10] = [['' for i in range(4)] for j in range(10)]
@@ -348,10 +348,10 @@ def interrupt_routine(rnum):
                         lq_am.append(cur_pcb)
 
         elif task == 'OS':
-            print("OUTPUT SPOOLING STARTED")
+            print("OUTPUT SPOOLING STARTED",file=f1)
             if(len(tq) != 0):
                 pcb = tq.pop(0)
-                print("job id", pcb.job_id)
+                print("job id", pcb.job_id,file=f1)
                 if(pcb.terminate_code == 0):
                     if(pcb.LLC == 0):
                         eb = [['\0' for i in range(4)] for j in range(10)]
@@ -441,10 +441,10 @@ def interrupt_routine(rnum):
                     start_channel(2)
 
         elif task == 'LD':
-            print("TASK LD OF CHANNEL 3")
+            print("TASK LD OF CHANNEL 3",file=f1)
             if((len(lq_am) != 0)):
                 cur_pcb = lq_am.pop(0)
-                print("job id", cur_pcb.job_id)
+                print("job id", cur_pcb.job_id,file=f1)
                 if(cur_pcb.PTR[0] == -1):
                     frame_num = (random.randint(0, 29))
                     while frame_num in used_frames:  # finding unique frame
@@ -489,11 +489,11 @@ def interrupt_routine(rnum):
                     rq.append(cur_pcb)
 
         elif task == 'RD':
-            print("TASK RD OF CHANNEL 3")
+            print("TASK RD OF CHANNEL 3",file=f1)
             if(len(ioq) != 0):
                 task = ''
                 pcb = ioq.pop(0)
-                print("job id", pcb.job_id)
+                print("job id", pcb.job_id,file=f1)
                 pcb.rw = ''
                 if(len(pcb.D) != 0):
                     index = pcb.D.pop(0)
@@ -505,11 +505,11 @@ def interrupt_routine(rnum):
                 return
 
         elif task == 'WT':
-            print("TASK WT OF CHANNEL 3")
+            print("TASK WT OF CHANNEL 3",file=f1)
             if(len(ioq) != 0):
                 task = ''
                 pcb = ioq.pop(0)
-                print("job id", pcb.job_id)
+                print("job id",pcb.job_id,file=f1)
                 pcb.rw = ''
                 if(pcb.LLC < pcb.TLL):
                     index = pcb.O.pop(0)
@@ -519,7 +519,7 @@ def interrupt_routine(rnum):
                     rq.append(pcb)
 
                 else:
-                    print("job id", pcb.job_id, "TERMINATED WITH CODE 2")
+                    print("job id",pcb.job_id, "TERMINATED WITH CODE 2",file=f1)
                     pcb.terminate_code = 2
                     tq.append(pcb)
                 return
@@ -552,12 +552,13 @@ def interrupt_routine(rnum):
         if(len(ioq) != 0):
             pcb = ioq[0]
             if(pcb.rw == 'RD'):
-                print("TASK RD OF CHANNEL 3")
-                print("job id", pcb.job_id)
+                print("TASK RD OF CHANNEL 3",file=f1)
+                print("job id",pcb.job_id,file=f1)
                 if(len(pcb.D) <= 0):
                     pcb = ioq.pop(0)
                     pcb.terminate_code = 3
-
+                    print("\n\ninterrupt at termination SI: ",SI," PI: ",PI," TI: ",TI,file=f1)
+                    print("Register Status IC: ",pcb.curr_IC," IR: ",IR," R: ",R,file=f1)
                     temp = [['\0' for i in range(4)] for j in range(10)]
                     for i in (pcb.used_mem_loc):
                         memory[i*10:(i*10)+10] = temp[0:10]
@@ -570,12 +571,13 @@ def interrupt_routine(rnum):
                     start_channel(3)
                 return
             if(pcb.rw == 'WT'):
-                print("TASK WT OF CHANNEL 3")
-                print("job id", pcb.job_id)
+                print("TASK WT OF CHANNEL 3",file=f1)
+                print("job id",pcb.job_id,file=f1)
                 if(pcb.LLC > pcb.TLL or pcb.TLL == 0):
                     pcb = ioq.pop(0)
                     pcb.terminate_code = 2
-
+                    print("\n\ninterrupt at termination SI: ",SI," PI: ",PI," TI: ",TI,file=f1)
+                    print("Register Status IC: ",pcb.curr_IC," IR: ",IR," R: ",R,file=f1)
                     temp = [['\0' for i in range(4)] for j in range(10)]
 
                     for i in (pcb.used_mem_loc):
@@ -592,15 +594,16 @@ def interrupt_routine(rnum):
 
 def master_mode():
     global m, ch1, mem_available, ch2, ch3, IR, IC, R, task, C, SI, PI, TI, used_frames, used_frames_size, memory, opfile, input_buffer, data_index, pd_error, gd_error, supervisory_storage, drum, TS, TSC, CH, ebq, ifbq, ofbq, rq, ioq, lq, tq, IOI, CHT, CH, buffer_status
-    # print("interrupt master mode",SI," ",PI," ",TI)
+    
     if(len(rq) != 0):
         pcb = rq[0]
         if (TI == 0 or TI == 1):
             if (SI == 0):
                 if (PI == 1):
                     rq[0].terminate_code = 4
-                    display(memory, 300)
-
+                    
+                    print("\n\ninterrupt at termination SI: ",SI," PI: ",PI," TI: ",TI,file=f1)
+                    print("Register Status IC: ",rq[0].curr_IC," IR: ",IR," R: ",R,file=f1)
                     temp = [['\0' for i in range(4)] for j in range(10)]
                     for i in (rq[0].used_mem_loc):
                         memory[i*10:(i*10)+10] = temp[0:10]
@@ -616,10 +619,11 @@ def master_mode():
 
                 elif (PI == 2):
                     # Operand Error
-                    print("PROGRAM TERMINATED WITH TERMINATE CODE 5")
-                    print(rq[0].job_id)
+                    print("PROGRAM TERMINATED WITH TERMINATE CODE 5",file=f1)
+                    print(rq[0].job_id,file=f1)
                     rq[0].terminate_code = 5
-
+                    print("\n\ninterrupt at termination SI: ",SI," PI: ",PI," TI: ",TI,file=f1)
+                    print("Register Status IC: ",rq[0].curr_IC," IR: ",IR," R: ",R,file=f1)
                     temp = [['\0' for i in range(4)] for j in range(10)]
                     for i in (rq[0].used_mem_loc):
                         memory[i*10:(i*10)+10] = temp[0:10]
@@ -640,7 +644,8 @@ def master_mode():
 
                     else:
                         rq[0].terminate_code = 6
-
+                        print("\n\ninterrupt at termination SI: ",SI," PI: ",PI," TI: ",TI,file=f1)
+                        print("Register Status IC: ",rq[0].curr_IC," IR: ",IR," R: ",R,file=f1)
                         temp = [['\0' for i in range(4)] for j in range(10)]
                         for i in (rq[0].used_mem_loc):
                             memory[i*10:(i*10)+10] = temp[0:10]
@@ -669,7 +674,8 @@ def master_mode():
                 elif (SI == 3):  # terminate successfully
                     # MOVE PCB FROM RQ TO TQ
                     rq[0].terminate_code = 0
-
+                    print("\n\ninterrupt at termination SI: ",SI," PI: ",PI," TI: ",TI,file=f1)
+                    print("Register Status IC: ",rq[0].curr_IC," IR: ",IR," R: ",R,file=f1)
                     mem_available = True  # need to be changed
                     temp = [['\0' for i in range(4)] for j in range(10)]
                     for i in (rq[0].used_mem_loc):
@@ -684,6 +690,8 @@ def master_mode():
 
         elif (TI == 2):
             rq[0].terminate_code = 3
+            print("\n\ninterrupt at termination SI: ",SI," PI: ",PI," TI: ",TI,file=f1)
+            print("Register Status IC: ",rq[0].curr_IC," IR: ",IR," R: ",R,file=f1)
             temp = [['\0' for i in range(4)] for j in range(10)]
             for i in (rq[0].used_mem_loc):
                 memory[i*10:(i*10)+10] = temp[0:10]
@@ -865,7 +873,7 @@ def execute_usrprgm():
             if (real_address == -1):  # valid page fault
                 PI = 3
                 SI = 0
-                print('valid page fault')
+                print('valid page fault',file=f1)
 
                 valid = True
                 if pcb.curr_IC[1] != 0:

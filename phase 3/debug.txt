@@ -1,0 +1,2337 @@
+Program Started
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+END CARD
+Loaded for Input Spooling 
+job ID 0001
+Length of rq 0
+Length of ifbq 6
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 0
+Length of rq 0
+Length of ifbq 6
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 3
+Length of rq 0
+Length of ifbq 6
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 0
+Length of rq 0
+Length of ifbq 6
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0001
+Length of rq 0
+Length of ifbq 5
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+END CARD
+Loaded for Input Spooling 
+job ID 0002
+Length of rq 0
+Length of ifbq 10
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0001
+Length of rq 0
+Length of ifbq 9
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 0
+Length of rq 0
+Length of ifbq 9
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0001
+Length of rq 0
+Length of ifbq 8
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 0
+Length of rq 0
+Length of ifbq 8
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+END CARD
+Loaded for Input Spooling 
+job ID 0003
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0001
+Length of rq 0
+Length of ifbq 9
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 0
+Length of rq 0
+Length of ifbq 9
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0001
+Length of rq 0
+Length of ifbq 8
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 0
+Length of rq 0
+Length of ifbq 8
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0001
+Length of rq 0
+Length of ifbq 7
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 1
+Interrupt routine 1
+END CARD
+Loaded for Input Spooling 
+job ID 0004
+Length of rq 0
+Length of ifbq 9
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0002
+Length of rq 0
+Length of ifbq 8
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 1
+Length of rq 0
+Length of ifbq 8
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0002
+Length of rq 0
+Length of ifbq 7
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 1
+Length of rq 0
+Length of ifbq 7
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 1
+Interrupt routine 1
+END CARD
+Loaded for Input Spooling 
+job ID 0005
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0002
+Length of rq 0
+Length of ifbq 12
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 1
+Length of rq 0
+Length of ifbq 12
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0002
+Length of rq 0
+Length of ifbq 11
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 1
+Length of rq 0
+Length of ifbq 11
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0002
+Length of rq 0
+Length of ifbq 10
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 2
+Interrupt routine 1
+END CARD
+Loaded for Input Spooling 
+job ID 0006
+Length of rq 0
+Length of ifbq 14
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 2
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0003
+Length of rq 0
+Length of ifbq 13
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 2
+Length of rq 0
+Length of ifbq 13
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 2
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0003
+Length of rq 0
+Length of ifbq 12
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 3
+Length of rq 0
+Length of ifbq 12
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 3
+Interrupt routine 1
+END CARD
+Loaded for Input Spooling 
+job ID 0007
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0004
+Length of rq 0
+Length of ifbq 17
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 3
+Length of rq 0
+Length of ifbq 17
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 3
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0004
+Length of rq 0
+Length of ifbq 16
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 4
+Length of rq 0
+Length of ifbq 16
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0005
+Length of rq 0
+Length of ifbq 15
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 1
+END CARD
+Loaded for Input Spooling 
+job ID 0008
+Length of rq 0
+Length of ifbq 20
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0005
+Length of rq 0
+Length of ifbq 19
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 4
+Length of rq 0
+Length of ifbq 19
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0005
+Length of rq 0
+Length of ifbq 18
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 4
+Length of rq 0
+Length of ifbq 18
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0005
+Length of rq 0
+Length of ifbq 17
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 17
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0005
+Length of rq 0
+Length of ifbq 16
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 16
+Length of ofbq 0
+Length of ioq 0
+Length of lq 4
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0005
+Length of rq 0
+Length of ifbq 15
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 5
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 15
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 5
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0006
+Length of rq 0
+Length of ifbq 14
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 5
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 14
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 5
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0006
+Length of rq 0
+Length of ifbq 13
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 5
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 13
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 5
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0006
+Length of rq 0
+Length of ifbq 12
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 5
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 12
+Length of ofbq 0
+Length of ioq 0
+Length of lq 3
+Length of tq 0
+Length of lq_am 5
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0006
+Length of rq 0
+Length of ifbq 11
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 11
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0007
+Length of rq 0
+Length of ifbq 10
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 10
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0007
+Length of rq 0
+Length of ifbq 9
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 9
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0007
+Length of rq 0
+Length of ifbq 8
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 8
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0007
+Length of rq 0
+Length of ifbq 7
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 7
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0007
+Length of rq 0
+Length of ifbq 6
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 6
+Length of ofbq 0
+Length of ioq 0
+Length of lq 2
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0007
+Length of rq 0
+Length of ifbq 5
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 7
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 5
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 7
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0008
+Length of rq 0
+Length of ifbq 4
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 7
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 4
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 7
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0008
+Length of rq 0
+Length of ifbq 3
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 7
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 3
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 7
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0008
+Length of rq 0
+Length of ifbq 2
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 7
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 2
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 7
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0008
+Length of rq 0
+Length of ifbq 1
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 7
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 1
+Length of ofbq 0
+Length of ioq 0
+Length of lq 1
+Length of tq 0
+Length of lq_am 7
+Interrupt routine 1
+Interrupt routine 3
+INPUT SPOOLING STARTED
+job id 0008
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 8
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 8
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0001
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 8
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0001
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 7
+
+
+interrupt at termination SI:  0  PI:  1  TI:  0
+Register Status IC:  [0, 1]  IR:  ['G', 'd', '2', '0']  R:  [0, 0, 0, 0]
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 7
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0002
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 7
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0002
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 6
+PROGRAM TERMINATED WITH TERMINATE CODE 5
+0002
+
+
+interrupt at termination SI:  0  PI:  2  TI:  0
+Register Status IC:  [0, 1]  IR:  ['G', 'D', 'p', '0']  R:  [0, 0, 0, 0]
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 2
+Length of lq_am 6
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0001
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 6
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 6
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0002
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 6
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0003
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 5
+valid page fault
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 5
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0004
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 4
+valid page fault
+Interrupt routine 1
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0005
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 4
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0005
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 3
+valid page fault
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 3
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0006
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 3
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0006
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 2
+valid page fault
+Interrupt routine 1
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 2
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0007
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 2
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0007
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 1
+valid page fault
+Interrupt routine 1
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 1
+valid page fault
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0008
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 1
+Interrupt routine 1
+Interrupt routine 3
+TASK LD OF CHANNEL 3
+job id 0008
+TASK RD OF CHANNEL 3
+job id 0003
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+valid page fault
+Interrupt routine 1
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0003
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0004
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 6
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 6
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0004
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0005
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 6
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 6
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0005
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0006
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 6
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 6
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0006
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+valid page fault
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0007
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 6
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0007
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+valid page fault
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0008
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 6
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0008
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+valid page fault
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0003
+
+
+interrupt at termination SI:  0  PI:  3  TI:  0
+Register Status IC:  [0, 2]  IR:  ['G', 'D', '3', '0']  R:  [0, 0, 0, 0]
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0003
+TASK WT OF CHANNEL 3
+job id 0004
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 5
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0004
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+
+
+interrupt at termination SI:  3  PI:  0  TI:  0
+Register Status IC:  [0, 3]  IR:  ['H', '\x00', '\x00', '\x00']  R:  [0, 0, 0, 0]
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0004
+TASK WT OF CHANNEL 3
+job id 0005
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0005
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+valid page fault
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0006
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0006
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0007
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0007
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0008
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0008
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0005
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0005
+Length of rq 4
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 4
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 4
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0006
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+valid page fault
+Interrupt routine 1
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0006
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+valid page fault
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0007
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0007
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0008
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+valid page fault
+Interrupt routine 1
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0008
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0005
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0005
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+valid page fault
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0006
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 4
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0006
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+
+
+interrupt at termination SI:  3  PI:  0  TI:  0
+Register Status IC:  [1, 5]  IR:  ['H', '\x00', '\x00', '\x00']  R:  ['8', ' ', ' ', ' ']
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 3
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0006
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 3
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 3
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0006
+TASK RD OF CHANNEL 3
+job id 0007
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 3
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0007
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0008
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 2
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0008
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0005
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0005
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0007
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0007
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 3
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0008
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+valid page fault
+Interrupt routine 1
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0008
+Length of rq 2
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+
+
+interrupt at termination SI:  3  PI:  0  TI:  0
+Register Status IC:  [1, 7]  IR:  ['H', '\x00', '\x00', '\x00']  R:  ['1', ' ', ' ', ' ']
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+
+
+interrupt at termination SI:  3  PI:  0  TI:  0
+Register Status IC:  [0, 9]  IR:  ['H', '\x00', '\x00', '\x00']  R:  [0, 0, 0, 0]
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 0
+Length of ioq 1
+Length of lq 0
+Length of tq 2
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0007
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 1
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 1
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0008
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 1
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 1
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0008
+TASK RD OF CHANNEL 3
+job id 0005
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 4
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 4
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK RD OF CHANNEL 3
+job id 0005
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 4
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0005
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 1
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+TASK WT OF CHANNEL 3
+job id 0005
+Length of rq 1
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+
+
+interrupt at termination SI:  3  PI:  0  TI:  0
+Register Status IC:  [1, 1]  IR:  ['H', '\x00', '\x00', '\x00']  R:  ['V', 'I', 'I', 'T']
+Interrupt routine 1
+Interrupt routine 3
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0005
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0005
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 1
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+job id 0005
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 5
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 5
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 5
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 4
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 4
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 4
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 4
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 4
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 3
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 2
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED
+Length of rq 0
+Length of ifbq 0
+Length of ofbq 1
+Length of ioq 0
+Length of lq 0
+Length of tq 0
+Length of lq_am 0
+Interrupt routine 2
+CHANNEL 2 STARTED. WRITING TO LINE PRINTER
+Interrupt routine 1
+Interrupt routine 3
+OUTPUT SPOOLING STARTED

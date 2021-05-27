@@ -1,4 +1,1 @@
-priority to the task
-channel timer
-CR BT (Execute user prog)
-codes with error
+trial and phase 3 contain same final code

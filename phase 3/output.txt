@@ -16,13 +16,10 @@ EVEN ELEMENTS:
 0   2   4   6   8   
 
 
+Time Limit Exceeded
+
+
 NOT VOWEL
-
-
-
-1   0   1   1
-
-NOT PALINDROME
 
 
 
